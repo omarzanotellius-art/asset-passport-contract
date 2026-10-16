@@ -40,7 +40,7 @@ contract AssetPassportPartCTest is Test {
     function status(address wallet) internal view returns (AssetPassport.Status s) {
         (, s,) = passport.roleOf(asset, wallet);
     }
-    function role(address wallet) internal view returns (AssetPassport.Role r) {
+    function currentRole(address wallet) internal view returns (AssetPassport.Role r) {
         (r,,) = passport.roleOf(asset, wallet);
     }
     function activeManager() internal {
@@ -54,8 +54,8 @@ contract AssetPassportPartCTest is Test {
         invite(holder, pellam, AM, "Pellam Asset Services");
         invite(holder, brennick, OM, "Brennick O&M");
         accept(pellam); accept(brennick);
-        assertEq(uint8(role(pellam)), uint8(AM));
-        assertEq(uint8(role(brennick)), uint8(OM));
+        assertEq(uint8(currentRole(pellam)), uint8(AM));
+        assertEq(uint8(currentRole(brennick)), uint8(OM));
     }
 
     function test_C1_role_none_cannot_be_invited() public {

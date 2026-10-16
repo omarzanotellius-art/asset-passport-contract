@@ -1,6 +1,6 @@
 import path from "node:path";
 import hardhatToolboxViemPlugin from "@nomicfoundation/hardhat-toolbox-viem";
-import { defineConfig } from "hardhat/config";
+import { configVariable, defineConfig } from "hardhat/config";
 
 export default defineConfig({
   plugins: [hardhatToolboxViemPlugin],
@@ -17,5 +17,18 @@ export default defineConfig({
       optimizer: { enabled: true, runs: 200 },
     },
   },
-  // The Polygon Amoy network is added in Stage 2, with secrets referred to by name only.
+  networks: {
+    // Polygon Amoy test network (Stage 2 live run). Secrets are referred to by NAME only;
+    // their values live in Hardhat's password-protected keystore, never in this file or the
+    // repository. All ten wallets come from one recovery phrase, in a fixed order (rule S2):
+    // 0 funder, 1 Larkmoor, 2 Tavren, 3 Tarrow, 4 Halvern, 5 Ostrell, 6 Pellam, 7 Quenby,
+    // 8 Brennick, 9 Dalbeck.
+    amoy: {
+      type: "http",
+      chainType: "generic",
+      chainId: 80002,
+      url: configVariable("AMOY_RPC_URL"),
+      accounts: { mnemonic: configVariable("AMOY_MNEMONIC"), count: 10 },
+    },
+  },
 });

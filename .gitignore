@@ -35,3 +35,4 @@
 
 # Local rehearsal progress (the Amoy progress file is committed as the public record)
 deployments/localhost-demo.json
+deployments/localhost-overlay.json

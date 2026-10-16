@@ -9,6 +9,10 @@
 //       Progress: deployments/localhost-demo.json.
 //   Live on Amoy:     npx hardhat run scripts/demo.ts --network amoy
 //       RESUMABLE: progress saved after every step to deployments/amoy-demo.json.
+//       IN INSTALMENTS (S3', S8'): before each farm the funder's POL is checked; if it is
+//       short, the run pauses before spending anything on that farm. Re-run when funded.
+//   Instalment rehearsal: DEMO_FORCE_PREFLIGHT=1 ... --network localhost
+//       applies the pre-flight and top-ups on a local chain too (with balances set low).
 //
 // Step names: "deploy", "topup <wallet>", "wildrye #<n>", "verrow #<n>" (n = action number).
 // All names are fictional.
@@ -28,7 +32,7 @@ type WalletName = (typeof WALLETS)[number];
 const FARMS = ["wildrye", "verrow"] as const;
 type Farm = (typeof FARMS)[number];
 
-// S3/S8: gas per wallet MEASURED in the local rehearsal; filled in after it (rounded up).
+// S3'/S8': gas per wallet MEASURED in the local rehearsal; filled in after it (rounded up).
 // The live run refuses to start while these are missing.
 // Local rehearsal 2026-10-16 (funder also pays the 9 top-ups on Amoy: + 9 x 21,000).
 const MEASURED_GAS: Partial<Record<WalletName, bigint>> = {
@@ -85,6 +89,11 @@ const chainId = await publicClient.getChainId();
 const localChain = chainId === 31337;
 const onAmoy = chainId === 80002;
 const persist = networkName !== "default";
+const PREFLIGHT = !localChain || process.env.DEMO_FORCE_PREFLIGHT === "1"; // S3', S8'
+const FARM_WALLETS: Record<Farm, WalletName[]> = {
+  wildrye: ["larkmoor", "tavren", "tarrow"],
+  verrow: ["halvern", "ostrell", "pellam", "quenby", "brennick", "dalbeck"],
+};
 const STATE_FILE = `deployments/${networkName}-demo.json`;
 const OVERLAY_FILE = `deployments/${networkName}-overlay.json`;
 const link = (tx: string) => (onAmoy ? `${EXPLORER}/tx/${tx}` : tx);
@@ -154,7 +163,55 @@ async function step(name: string, simulated: string | undefined, send: () => Pro
   console.log(`✓ ${name}${simulated ? ` [${simulated}]` : ""}   ${link(tx)}`);
 }
 
-// ---- deploy -------------------------------------------------------------------------------------
+// ---- S3'/S8': pre-flight and top-ups, per farm (instalments) --------------------------------------
+const DEPLOY_GAS = 4_250_000n; // measured 4,209,764 for the deployment (part of the funder's figure)
+const TOPUP_GAS = 21_000n;
+async function maxFee() { return (await fees()).maxFeePerGas; }
+const withMargin = (gas: bigint, fee: bigint) => (gas * fee * 12n) / 10n; // +20%
+
+/** POL a party still needs for its farm, given what it already holds. */
+async function shortfall(w: WalletName, fee: bigint) {
+  const need = withMargin(MEASURED_GAS[w]!, fee);
+  const bal = await publicClient.getBalance({ address: address(w) });
+  return bal >= need ? 0n : need - bal + parseEther("0.001");
+}
+
+/** Checks the funder can cover this instalment; returns false (pause) if not. */
+async function preflight(label: string, farm: Farm | null, includeDeploy: boolean): Promise<boolean> {
+  if (!PREFLIGHT) return true;
+  const missing = WALLETS.filter((w) => MEASURED_GAS[w] === undefined);
+  if (missing.length) throw new Error(`Not started — measured gas missing for: ${missing.join(", ")}.`);
+  const fee = await maxFee();
+  let total = includeDeploy ? withMargin(DEPLOY_GAS, fee) : 0n;
+  for (const w of farm ? FARM_WALLETS[farm] : []) {
+    if (state.done[`topup ${w}`]) continue;
+    total += (await shortfall(w, fee)) + withMargin(TOPUP_GAS, fee);
+  }
+  const bal = await publicClient.getBalance({ address: address("funder") });
+  console.log(`\nPre-flight (${label}): max fee ${formatUnits(fee, 9)} gwei; funder holds ${formatEther(bal)} POL, needs ~${formatEther(total)}.`);
+  if (bal >= total) return true;
+  console.log(`⏸  PAUSED before ${label} — nothing spent on it. Funder needs ${formatEther(total - bal)} more POL.`);
+  console.log(`   Send POL to the funder (${address("funder")}) and re-run the same command to continue.`);
+  return false;
+}
+
+async function topUps(farm: Farm) {
+  if (!PREFLIGHT) return;
+  const fee = await maxFee();
+  for (const w of FARM_WALLETS[farm]) {
+    await step(`topup ${w}`, undefined, async () => {
+      const value = await shortfall(w, fee);
+      return wallet.funder.sendTransaction({ to: address(w), value, ...(await fees()) });
+    });
+  }
+}
+
+// ---- deploy (first instalment: deploy + Wildrye) ----------------------------------------------------
+const checkedThisRun = new Set<Farm>();
+if (!state.done["deploy"]) {
+  if (!(await preflight("deploy and wildrye", "wildrye", true))) process.exit(0);
+  checkedThisRun.add("wildrye");
+}
 await step("deploy", undefined, async () => {
   const { deploymentTransaction } = await viem.sendDeploymentTransaction("AssetPassport", [], {
     account: wallet.funder.account, ...(await fees()),
@@ -186,32 +243,6 @@ function captureIds(farm: Farm, a: Action) {
   };
 }
 
-// ---- S3/S8: pre-flight and top-ups (live networks only) -------------------------------------------
-if (!localChain) {
-  const parties = WALLETS.filter((w) => w !== "funder");
-  const missing = WALLETS.filter((w) => MEASURED_GAS[w] === undefined);
-  if (missing.length) throw new Error(`Not started — measured gas missing for: ${missing.join(", ")}. Run the local rehearsal first.`);
-  const maxFee = (await fees()).maxFeePerGas;
-  const need = (w: WalletName) => (MEASURED_GAS[w]! * maxFee * 12n) / 10n; // +20%
-  if (!state.done["topup " + parties[parties.length - 1]]) {
-    let total = need("funder");
-    for (const w of parties) {
-      const bal = await publicClient.getBalance({ address: address(w) });
-      if (bal < need(w)) total += need(w) - bal + parseEther("0.001");
-    }
-    const funderBal = await publicClient.getBalance({ address: address("funder") });
-    console.log(`\nMax fee per gas: ${formatUnits(maxFee, 9)} gwei. Funder holds ${formatEther(funderBal)} POL; needs ~${formatEther(total)}.`);
-    if (funderBal < total) throw new Error(`Not started — nothing more spent. Funder needs ${formatEther(total - funderBal)} more POL.`);
-  }
-  for (const w of parties) {
-    await step(`topup ${w}`, undefined, async () => {
-      const bal = await publicClient.getBalance({ address: address(w) });
-      const value = bal >= need(w) ? 0n : need(w) - bal + parseEther("0.001");
-      return wallet.funder.sendTransaction({ to: address(w), value, ...(await fees()) });
-    });
-  }
-}
-
 // ---- S1: play both farms -----------------------------------------------------------------------------
 function unitInput(u: any) {
   return {
@@ -221,6 +252,12 @@ function unitInput(u: any) {
 }
 
 for (const farm of FARMS) {
+  const farmDone = state.done[`${farm} #${actions[farm].length}`];
+  if (!farmDone) {
+    const started = actions[farm].some((a) => state.done[`${farm} #${a.n}`]) || FARM_WALLETS[farm].some((w) => state.done[`topup ${w}`]);
+    if (!started && !checkedThisRun.has(farm) && !(await preflight(farm, farm, false))) process.exit(0);
+    await topUps(farm);
+  }
   console.log(`\n— ${farm} —`);
   const headlineOf: Record<string, string> = {};
   for (const a of actions[farm]) if (a.do === "submitEntry") headlineOf[a.key] = a.headline;

@@ -6,6 +6,7 @@ pragma solidity 0.8.37;
 ///         Stage 1 part A: assets and identity (rules A1-A9).
 ///         Stage 1 part C: roles, invitations and revocation (rules C1-C11).
 ///         Stage 1 part B: equipment list and warranties (rules B1-B12).
+///         Stage 1 part D: entries and confirmation (rules D1-D15).
 contract AssetPassport {
     /// A6: every text field is limited to 100 bytes.
     uint256 public constant MAX_TEXT_BYTES = 100;
@@ -74,6 +75,44 @@ contract AssetPassport {
         bytes payload;          // the change, applied unchanged on confirmation
     }
 
+    /// D: who wrote an entry, as a snapshot taken at submission.
+    enum Writer { Holder, AssetManager, OmProvider }
+
+    /// D3: highest category number (format document: 1-14).
+    uint8 public constant MAX_CATEGORY = 14;
+    /// D2: categories an O&M provider may write: 2 scheduled, 3 unscheduled,
+    /// 4 replacement/revamping/repowering, 13 severe weather. Holder and asset manager: 1-14.
+    uint256 private constant OM_CATEGORIES = (1 << 2) | (1 << 3) | (1 << 4) | (1 << 13);
+
+    /// D4, D5, D7: an entry as submitted.
+    struct EntryInput {
+        uint8 category;
+        uint64 eventDate;
+        bytes32 headlineFingerprint; // non-holder entries: SHA-256 of the headline (D5)
+        string headline;             // holder entries: the text itself (D5)
+        bytes32 manifest;            // optional document manifest fingerprint
+        string equipmentRef;         // optional, readable text (D43)
+        uint256 link;                // optional earlier entry number, 0 = none
+    }
+
+    /// D: an entry as stored.
+    struct Entry {
+        uint8 category;
+        uint64 eventDate;
+        uint64 recordedAt;           // D4: the block's time
+        address author;
+        Writer writer;               // snapshot at submission
+        string authorCompany;        // snapshot at submission (empty for the holder)
+        bytes32 headlineFingerprint;
+        string headline;             // empty until confirmed (D5, D6)
+        bytes32 manifest;
+        string equipmentRef;
+        uint256 link;
+        bool confirmed;
+        address confirmer;           // D9
+        uint64 confirmedAt;          // D9
+    }
+
     /// A2: number of assets registered so far; asset numbers run 1..assetCount.
     uint256 public assetCount;
     mapping(uint256 => Asset) private _assets;
@@ -86,6 +125,9 @@ contract AssetPassport {
     mapping(uint256 => mapping(uint256 => uint64[])) private _extensions;
     mapping(uint256 => uint256) public proposalCount;
     mapping(uint256 => mapping(uint256 => Proposal)) private _proposals;
+    /// D14: entries numbered 1..entryCount[assetId] within each asset.
+    mapping(uint256 => uint256) public entryCount;
+    mapping(uint256 => mapping(uint256 => Entry)) private _entries;
 
     /// A7: one event carrying the asset number, the holder and every identity field.
     event AssetRegistered(uint256 indexed assetId, address indexed holder, Identity identity);
@@ -104,6 +146,10 @@ contract AssetPassport {
     event ProposalMade(uint256 indexed assetId, uint256 indexed proposalId, ProposalKind kind, address indexed proposer);
     event ProposalConfirmed(uint256 indexed assetId, uint256 indexed proposalId);
     event ProposalWithdrawn(uint256 indexed assetId, uint256 indexed proposalId);
+
+    /// D12: submission and confirmation, with every field.
+    event EntrySubmitted(uint256 indexed assetId, uint256 indexed entryId, address indexed author, Entry entry);
+    event EntryConfirmed(uint256 indexed assetId, uint256 indexed entryId, address indexed confirmer, string headline);
 
     error EmptyField(string field);
     error TextTooLong(string field);
@@ -128,6 +174,15 @@ contract AssetPassport {
     error ExtensionNotLater();
     error UnknownProposal(uint256 proposalId);
     error ProposalNotPending(uint256 proposalId);
+    error InvalidCategory(uint8 category);
+    error CategoryNotAllowed(uint8 category);
+    error HeadlineNotAllowed();
+    error FingerprintNotAllowed();
+    error MissingFingerprint();
+    error HeadlineMismatch();
+    error InvalidLink(uint256 link);
+    error UnknownEntry(uint256 entryId);
+    error AlreadyConfirmed(uint256 entryId);
 
     /// A1-A7: register an asset. Anyone may call; the caller becomes the holder.
     function registerAsset(Identity calldata identity) external returns (uint256 assetId) {
@@ -378,6 +433,98 @@ contract AssetPassport {
         if (proposalId == 0 || proposalId > proposalCount[assetId]) revert UnknownProposal(proposalId);
         return _proposals[assetId][proposalId];
     }
+
+    // ---------------------------------------------------------------- part D: entries
+
+    /// D1-D5, D7, D8: submit an entry. Holder entries carry the headline text and are
+    /// confirmed at once; other entries carry only the headline's fingerprint.
+    function submitEntry(uint256 assetId, EntryInput calldata input) external returns (uint256 entryId) {
+        Asset storage asset = _existing(assetId);
+        Writer writer;
+        string memory company;
+        if (msg.sender == asset.holder) {
+            writer = Writer.Holder;
+        } else {
+            Membership storage m = _members[assetId][msg.sender];
+            if (m.status != Status.Active) revert NotAuthorized(msg.sender);
+            writer = m.role == Role.AssetManager ? Writer.AssetManager : Writer.OmProvider;
+            company = m.company;
+        }
+
+        if (input.category == 0 || input.category > MAX_CATEGORY) revert InvalidCategory(input.category);
+        if (writer == Writer.OmProvider && (OM_CATEGORIES & (uint256(1) << input.category)) == 0) {
+            revert CategoryNotAllowed(input.category);
+        }
+        if (input.eventDate == 0) revert EmptyField("eventDate");
+        if (input.eventDate > block.timestamp) revert DateInFuture();
+        _checkText(input.equipmentRef, "equipmentRef", false);
+        if (input.link != 0 && input.link > entryCount[assetId]) revert InvalidLink(input.link);
+
+        entryId = ++entryCount[assetId];
+        Entry storage e = _entries[assetId][entryId];
+        e.category = input.category;
+        e.eventDate = input.eventDate;
+        e.recordedAt = uint64(block.timestamp);
+        e.author = msg.sender;
+        e.writer = writer;
+        e.authorCompany = company;
+        e.manifest = input.manifest;
+        e.equipmentRef = input.equipmentRef;
+        e.link = input.link;
+
+        if (writer == Writer.Holder) {
+            if (input.headlineFingerprint != bytes32(0)) revert FingerprintNotAllowed();
+            _checkText(input.headline, "headline", true);
+            e.headlineFingerprint = sha256(bytes(input.headline));
+            e.headline = input.headline;
+            e.confirmed = true;
+            e.confirmer = msg.sender;
+            e.confirmedAt = uint64(block.timestamp);
+        } else {
+            if (bytes(input.headline).length != 0) revert HeadlineNotAllowed();
+            if (input.headlineFingerprint == bytes32(0)) revert MissingFingerprint();
+            e.headlineFingerprint = input.headlineFingerprint;
+        }
+        emit EntrySubmitted(assetId, entryId, msg.sender, e);
+        if (writer == Writer.Holder) emit EntryConfirmed(assetId, entryId, msg.sender, input.headline);
+    }
+
+    /// D6, D8, D9, D11: confirm a pending entry by publishing its headline, which must
+    /// match the fingerprint locked at submission.
+    function confirmEntry(uint256 assetId, uint256 entryId, string calldata headline) external {
+        Asset storage asset = _existing(assetId);
+        Entry storage e = _existingEntry(assetId, entryId);
+        if (e.confirmed) revert AlreadyConfirmed(entryId);
+
+        bool isHolder = msg.sender == asset.holder;
+        if (!isHolder) {
+            Membership storage m = _members[assetId][msg.sender];
+            bool activeManager = m.role == Role.AssetManager && m.status == Status.Active;
+            // asset manager entries: holder only; O&M entries: holder or an active asset manager
+            if (!(e.writer == Writer.OmProvider && activeManager)) revert NotAuthorized(msg.sender);
+        }
+        _checkText(headline, "headline", true);
+        if (sha256(bytes(headline)) != e.headlineFingerprint) revert HeadlineMismatch();
+
+        e.headline = headline;
+        e.confirmed = true;
+        e.confirmer = msg.sender;
+        e.confirmedAt = uint64(block.timestamp);
+        emit EntryConfirmed(assetId, entryId, msg.sender, headline);
+    }
+
+    /// D13: anyone can read an entry.
+    function getEntry(uint256 assetId, uint256 entryId) external view returns (Entry memory) {
+        _existing(assetId);
+        return _existingEntry(assetId, entryId);
+    }
+
+    function _existingEntry(uint256 assetId, uint256 entryId) private view returns (Entry storage) {
+        if (entryId == 0 || entryId > entryCount[assetId]) revert UnknownEntry(entryId);
+        return _entries[assetId][entryId];
+    }
+
+    // D10: there is deliberately no function that edits, deletes or withdraws an entry.
 
     /// C9: anyone can read a wallet's role, status and company on an asset
     /// (Role.None / Status.None for wallets without a role).

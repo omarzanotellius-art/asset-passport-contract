@@ -7,6 +7,7 @@ pragma solidity 0.8.37;
 ///         Stage 1 part C: roles, invitations and revocation (rules C1-C11).
 ///         Stage 1 part B: equipment list and warranties (rules B1-B12).
 ///         Stage 1 part D: entries and confirmation (rules D1-D15).
+///         Stage 1 part E: control transfer (rules E1-E11).
 contract AssetPassport {
     /// A6: every text field is limited to 100 bytes.
     uint256 public constant MAX_TEXT_BYTES = 100;
@@ -128,6 +129,8 @@ contract AssetPassport {
     /// D14: entries numbered 1..entryCount[assetId] within each asset.
     mapping(uint256 => uint256) public entryCount;
     mapping(uint256 => mapping(uint256 => Entry)) private _entries;
+    /// E1, E2: at most one proposed new holder per asset; address(0) = none.
+    mapping(uint256 => address) private _pendingHolder;
 
     /// A7: one event carrying the asset number, the holder and every identity field.
     event AssetRegistered(uint256 indexed assetId, address indexed holder, Identity identity);
@@ -150,6 +153,11 @@ contract AssetPassport {
     /// D12: submission and confirmation, with every field.
     event EntrySubmitted(uint256 indexed assetId, uint256 indexed entryId, address indexed author, Entry entry);
     event EntryConfirmed(uint256 indexed assetId, uint256 indexed entryId, address indexed confirmer, string headline);
+
+    /// E9: the ownership timeline is built from these events.
+    event TransferProposed(uint256 indexed assetId, address indexed holder, address indexed proposed);
+    event TransferCancelled(uint256 indexed assetId, address indexed holder, address indexed proposed);
+    event ControlTransferred(uint256 indexed assetId, address indexed previousHolder, address indexed newHolder);
 
     error EmptyField(string field);
     error TextTooLong(string field);
@@ -183,6 +191,7 @@ contract AssetPassport {
     error InvalidLink(uint256 link);
     error UnknownEntry(uint256 entryId);
     error AlreadyConfirmed(uint256 entryId);
+    error NoPendingTransfer();
 
     /// A1-A7: register an asset. Anyone may call; the caller becomes the holder.
     function registerAsset(Identity calldata identity) external returns (uint256 assetId) {
@@ -525,6 +534,48 @@ contract AssetPassport {
     }
 
     // D10: there is deliberately no function that edits, deletes or withdraws an entry.
+
+    // ---------------------------------------------------------------- part E: control transfer
+
+    /// E1-E4: the current holder proposes a new holder; a new proposal replaces a pending one.
+    function proposeTransfer(uint256 assetId, address proposed) external {
+        Asset storage asset = _existing(assetId);
+        if (msg.sender != asset.holder) revert NotAuthorized(msg.sender);
+        if (proposed == address(0) || proposed == asset.holder) revert InvalidWallet(proposed);
+        if (_members[assetId][proposed].status != Status.None) revert AlreadyMember(proposed);
+        _pendingHolder[assetId] = proposed;
+        emit TransferProposed(assetId, msg.sender, proposed);
+    }
+
+    /// E2: the current holder cancels the pending proposal.
+    function cancelTransfer(uint256 assetId) external {
+        Asset storage asset = _existing(assetId);
+        if (msg.sender != asset.holder) revert NotAuthorized(msg.sender);
+        address proposed = _pendingHolder[assetId];
+        if (proposed == address(0)) revert NoPendingTransfer();
+        delete _pendingHolder[assetId];
+        emit TransferCancelled(assetId, msg.sender, proposed);
+    }
+
+    /// E1, E4-E8: the proposed wallet accepts; control moves; the proposal is cleared.
+    /// Members stay active (E6); history keeps its authors (E8); the new holder confirms
+    /// whatever is still pending (E7), because "holder" always means the current one.
+    function acceptTransfer(uint256 assetId) external {
+        Asset storage asset = _existing(assetId);
+        address proposed = _pendingHolder[assetId];
+        if (proposed == address(0) || msg.sender != proposed) revert NotAuthorized(msg.sender);
+        if (_members[assetId][msg.sender].status != Status.None) revert AlreadyMember(msg.sender);
+        address previous = asset.holder;
+        asset.holder = msg.sender;
+        delete _pendingHolder[assetId];
+        emit ControlTransferred(assetId, previous, msg.sender);
+    }
+
+    /// E10: the pending proposed holder (address(0) if none).
+    function pendingHolderOf(uint256 assetId) external view returns (address) {
+        _existing(assetId);
+        return _pendingHolder[assetId];
+    }
 
     /// C9: anyone can read a wallet's role, status and company on an asset
     /// (Role.None / Status.None for wallets without a role).

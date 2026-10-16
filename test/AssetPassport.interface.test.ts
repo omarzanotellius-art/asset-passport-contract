@@ -8,9 +8,13 @@ import hre from "hardhat";
 // is added to the list below deliberately, with the rule that allows it.
 const ALLOWED_STATE_CHANGING = [
   "registerAsset", // A1-A7
+  "inviteRole", // C2-C4, C6
+  "withdrawInvitation", // C2-C3
+  "acceptRole", // C3
+  "revokeRole", // C2, C7
 ];
 
-describe("AssetPassport interface (rule A8)", () => {
+describe("AssetPassport interface (rules A8, C11)", () => {
   it("has no state-changing functions other than the allowed list", async () => {
     const artifact = await hre.artifacts.readArtifact("AssetPassport");
     const changing = artifact.abi

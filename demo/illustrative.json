@@ -15,7 +15,8 @@
     "orientation": [
       "Azimuth 180°",
       "Rotation ±60°"
-    ]
+    ],
+    "modulePerformanceWarranty": "2046-07"
   },
   "AP-0002": {
     "cod": "2021-07",
@@ -31,6 +32,7 @@
     "orientation": [
       "Azimuth 180°",
       "Rotation ±60°"
-    ]
+    ],
+    "modulePerformanceWarranty": "2046-07"
   }
 }

@@ -1,0 +1,15 @@
+FICTIONAL DOCUMENT - asset passport demo (testnet). Not a real site, company, person or event.
+
+EQUIPMENT REPLACEMENT RECORD
+Asset: Verrow Solar (AP-0002)
+Provider: Brennick O&M
+Date: September 2023
+
+Removed: Inverter 2 (central), Brindle Inverter Systems CI-3400, in service
+July 2021 - September 2023, after a third failure.
+Installed: Inverter 2 (central), Brindle Inverter Systems CI-3400 (new unit),
+in service September 2023; standard warranty to September 2028.
+Commissioning tests on the new unit: start-up, grid protection, full-load run - passed.
+Equipment: Inverter 2
+
+Technician: Field technician, Brennick O&M

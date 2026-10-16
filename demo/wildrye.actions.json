@@ -62,7 +62,8 @@
       "eventDate": "2021-07",
       "headline": "10 MWac, original, EPC: Kestrand Builders",
       "equipmentRef": "",
-      "link": null
+      "link": null,
+      "evidence": "wildrye/commissioning"
     },
     {
       "n": 7,
@@ -269,7 +270,8 @@
       "eventDate": "2021-12-31",
       "headline": "2021 (from Jul): 12,900 MWh",
       "equipmentRef": "",
-      "link": null
+      "link": null,
+      "evidence": null
     },
     {
       "n": 20,
@@ -281,7 +283,8 @@
       "eventDate": "2022-03",
       "headline": "Annual visit",
       "equipmentRef": "",
-      "link": null
+      "link": null,
+      "evidence": null
     },
     {
       "n": 21,
@@ -300,7 +303,8 @@
       "eventDate": "2022-12-31",
       "headline": "2022: 26,200 MWh",
       "equipmentRef": "",
-      "link": null
+      "link": null,
+      "evidence": null
     },
     {
       "n": 23,
@@ -312,7 +316,8 @@
       "eventDate": "2023-03",
       "headline": "Annual visit",
       "equipmentRef": "",
-      "link": null
+      "link": null,
+      "evidence": null
     },
     {
       "n": 24,
@@ -331,7 +336,8 @@
       "eventDate": "2023-06",
       "headline": "Tracker motor replaced",
       "equipmentRef": "Trackers",
-      "link": null
+      "link": null,
+      "evidence": "wildrye/trackerMotor"
     },
     {
       "n": 26,
@@ -350,7 +356,8 @@
       "eventDate": "2023-12-31",
       "headline": "2023: 25,000 MWh",
       "equipmentRef": "",
-      "link": null
+      "link": null,
+      "evidence": null
     },
     {
       "n": 28,
@@ -362,7 +369,8 @@
       "eventDate": "2024-03",
       "headline": "Annual visit",
       "equipmentRef": "",
-      "link": null
+      "link": null,
+      "evidence": null
     },
     {
       "n": 29,
@@ -381,7 +389,8 @@
       "eventDate": "2024-07",
       "headline": "O&M contract renewed, same provider",
       "equipmentRef": "",
-      "link": null
+      "link": null,
+      "evidence": null
     },
     {
       "n": 31,
@@ -393,7 +402,8 @@
       "eventDate": "2024-12-31",
       "headline": "2024: 26,100 MWh",
       "equipmentRef": "",
-      "link": null
+      "link": null,
+      "evidence": null
     },
     {
       "n": 32,
@@ -405,7 +415,8 @@
       "eventDate": "2025-03",
       "headline": "Annual visit",
       "equipmentRef": "",
-      "link": null
+      "link": null,
+      "evidence": null
     },
     {
       "n": 33,
@@ -424,7 +435,8 @@
       "eventDate": "2025-12-31",
       "headline": "2025: 25,800 MWh",
       "equipmentRef": "",
-      "link": null
+      "link": null,
+      "evidence": null
     },
     {
       "n": 35,
@@ -436,7 +448,8 @@
       "eventDate": "2026-03",
       "headline": "Annual visit",
       "equipmentRef": "",
-      "link": null
+      "link": null,
+      "evidence": null
     },
     {
       "n": 36,
@@ -455,7 +468,8 @@
       "eventDate": "2026-07",
       "headline": "Property damage (all risk), Granmoor Insurance, 07/2026-07/2027",
       "equipmentRef": "",
-      "link": null
+      "link": null,
+      "evidence": null
     },
     {
       "n": 38,
@@ -467,7 +481,8 @@
       "eventDate": "2026-07",
       "headline": "Business interruption, Granmoor Insurance, 07/2026-07/2027",
       "equipmentRef": "",
-      "link": null
+      "link": null,
+      "evidence": null
     },
     {
       "n": 39,
@@ -479,7 +494,8 @@
       "eventDate": "2026-07",
       "headline": "General liability, Granmoor Insurance, 07/2026-07/2027",
       "equipmentRef": "",
-      "link": null
+      "link": null,
+      "evidence": null
     },
     {
       "n": 40,
@@ -491,7 +507,8 @@
       "eventDate": "2026-09-30",
       "headline": "2026 (Jan-Sep): 21,500 MWh",
       "equipmentRef": "",
-      "link": null
+      "link": null,
+      "evidence": null
     }
   ]
 }

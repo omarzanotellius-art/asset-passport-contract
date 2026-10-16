@@ -1,0 +1,14 @@
+FICTIONAL DOCUMENT - asset passport demo (testnet). Not a real site, company, person or event.
+
+WARRANTY CLAIM
+To: Brindle Inverter Systems
+From: Halvern Capital (owner)
+Asset: Verrow Solar (AP-0002)
+Date: September 2022
+
+Unit: Inverter 2 (central), model CI-3400, in service since July 2021
+(standard warranty to July 2026).
+Claim: repeated failure within the warranty period - control board replaced in
+April 2022; further trip and second call-out in August 2022.
+Request: investigation and repair or replacement under warranty.
+Attached: site report (April 2022), work order (August 2022).

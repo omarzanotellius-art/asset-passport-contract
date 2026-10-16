@@ -1,0 +1,4 @@
+# Evidence files are fingerprinted byte for byte (SHA-256). Git must never change
+# them on checkout - in particular, never convert line endings on Windows -
+# or a visitor's fingerprint would no longer match the one recorded on-chain.
+demo/evidence/** -text

@@ -1,0 +1,18 @@
+FICTIONAL DOCUMENT - asset passport demo (testnet). Not a real site, company, person or event.
+
+WORK ORDER - UNSCHEDULED (second call-out)
+Asset: Verrow Solar (AP-0002)
+Provider: Brennick O&M
+Date of work: August 2022
+
+Reported: Inverter 2 offline again, four months after the control board replacement.
+Found: repeated trip; internal fault log shows DC-side insulation alarms before the trip.
+Work done: inverter reset; DC input checks; returned to service at reduced output
+pending manufacturer investigation.
+Equipment: Inverter 2 (central)
+Status: back in service; manufacturer informed.
+
+Technician: Field technician, Brennick O&M
+
+Note added by the owner when entering this record in the passport (November 2024):
+this work order was filed at the time but not entered in the passport until now.

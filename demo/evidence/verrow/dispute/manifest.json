@@ -1,0 +1,12 @@
+{
+  "files": [
+    {
+      "name": "dispute-notice.txt",
+      "sha256": "e17a561c1546f6c95d47cec6dc0e967ae71a15ac7a0303bdc14e91c1e9758c50"
+    },
+    {
+      "name": "manufacturer-response.txt",
+      "sha256": "b288fa094cde2de5499ec939ecd0bdbaad1be02fad98741b627b7af44ca4f17e"
+    }
+  ]
+}

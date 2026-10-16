@@ -1,0 +1,15 @@
+FICTIONAL DOCUMENT - asset passport demo (testnet). Not a real site, company, person or event.
+
+SITE REPORT - UNSCHEDULED
+Asset: Verrow Solar (AP-0002)
+Provider: Brennick O&M
+Date: April 2022
+
+Reported: Inverter 2 tripped offline; did not restart remotely.
+Found: control board fault code on Inverter 2; DC and AC sides otherwise normal.
+Work done: control board replaced (manufacturer part); inverter restarted and
+monitored for one hour at partial load.
+Equipment: Inverter 2 (central)
+Status: back in service.
+
+Technician: Field technician, Brennick O&M

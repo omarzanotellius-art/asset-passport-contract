@@ -1,0 +1,17 @@
+FICTIONAL DOCUMENT - asset passport demo (testnet). Not a real site, company, person or event.
+
+SITE REPORT
+Asset: Verrow Solar (AP-0002)
+Provider: Brennick O&M
+Date: May 2024
+
+Area: DC cabling, cable section C.
+Found: the October 2022 temporary repair and the June 2023 insulation repair
+are holding only partly; new cracking next to the repaired points.
+Work done: further sealing at the new points.
+Assessment by the provider: the run needs full replacement; temporary measures
+are reaching their limit.
+Equipment: Cable section C
+Status: open.
+
+Technician: Field technician, Brennick O&M

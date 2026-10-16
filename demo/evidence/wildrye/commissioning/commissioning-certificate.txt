@@ -1,0 +1,18 @@
+FICTIONAL DOCUMENT - asset passport demo (testnet). Not a real site, company, person or event.
+
+COMMISSIONING CERTIFICATE
+Asset: Wildrye Solar (AP-0001), Fresno County, California
+Issued by: Kestrand Builders (EPC)
+Date: July 2021
+
+Scope: 10 MWac / 13.08 MWp single-axis tracker plant.
+- 3 central inverters, Brindle Inverter Systems CI-3400
+- 24,000 bifacial modules, Tolven Solar Modules M-545
+- 3 transformers 0.6/21 kV, Harnell Transformer Co. T-3.5
+- 267 tracker rows, Pivara Tracking Systems ST-1
+
+Tests completed: insulation resistance, string open-circuit voltage and current,
+inverter start-up and grid protection, tracker range of motion, SCADA communication.
+Result: all tests passed. Plant energized June 2021; commercial operation July 2021.
+
+Signed for the EPC: Commissioning manager, Kestrand Builders

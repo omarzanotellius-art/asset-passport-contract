@@ -1,0 +1,12 @@
+FICTIONAL DOCUMENT - asset passport demo (testnet). Not a real site, company, person or event.
+
+RESPONSE TO WARRANTY CLAIM
+From: Brindle Inverter Systems
+To: Halvern Capital
+Asset: Verrow Solar (AP-0002)
+Date: February 2024
+
+Regarding: warranty claim for Inverter 2 (September 2022).
+Decision: claim declined. The manufacturer's investigation attributes the
+failures to DC-side conditions at installation (cabling between the combiner
+boxes and Inverter 2), which fall outside the product warranty.

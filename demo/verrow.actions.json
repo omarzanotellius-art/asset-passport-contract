@@ -62,7 +62,8 @@
       "eventDate": "2021-07",
       "headline": "10 MWac, original, EPC: Norvale Constructors",
       "equipmentRef": "",
-      "link": null
+      "link": null,
+      "evidence": "verrow/commissioning"
     },
     {
       "n": 7,
@@ -269,7 +270,8 @@
       "eventDate": "2021-12-31",
       "headline": "2021 (from Jul): 12,900 MWh",
       "equipmentRef": "",
-      "link": null
+      "link": null,
+      "evidence": null
     },
     {
       "n": 20,
@@ -281,7 +283,8 @@
       "eventDate": "2022-03",
       "headline": "Annual visit",
       "equipmentRef": "",
-      "link": null
+      "link": null,
+      "evidence": null
     },
     {
       "n": 21,
@@ -300,7 +303,8 @@
       "eventDate": "2022-04",
       "headline": "Control board replaced after a trip",
       "equipmentRef": "Inverter 2",
-      "link": null
+      "link": null,
+      "evidence": "verrow/inv2Trip"
     },
     {
       "n": 23,
@@ -319,7 +323,8 @@
       "eventDate": "2022-09",
       "headline": "Warranty claim opened",
       "equipmentRef": "Inverter 2",
-      "link": null
+      "link": null,
+      "evidence": "verrow/claim"
     },
     {
       "n": 25,
@@ -331,7 +336,8 @@
       "eventDate": "2022-10",
       "headline": "Temporary repair",
       "equipmentRef": "Cable section C",
-      "link": null
+      "link": null,
+      "evidence": "verrow/cableTemp"
     },
     {
       "n": 26,
@@ -350,7 +356,8 @@
       "eventDate": "2022-12-31",
       "headline": "2022: 24,100 MWh",
       "equipmentRef": "",
-      "link": null
+      "link": null,
+      "evidence": null
     },
     {
       "n": 28,
@@ -362,7 +369,8 @@
       "eventDate": "2023-03",
       "headline": "Annual visit",
       "equipmentRef": "",
-      "link": null
+      "link": null,
+      "evidence": null
     },
     {
       "n": 29,
@@ -381,7 +389,8 @@
       "eventDate": "2023-06",
       "headline": "Insulation repaired",
       "equipmentRef": "Cable section C",
-      "link": null
+      "link": null,
+      "evidence": null
     },
     {
       "n": 31,
@@ -400,7 +409,8 @@
       "eventDate": "2023-09",
       "headline": "Replaced with a new unit",
       "equipmentRef": "Inverter 2",
-      "link": null
+      "link": null,
+      "evidence": "verrow/inv2Replaced"
     },
     {
       "n": 33,
@@ -448,7 +458,8 @@
       "eventDate": "2023-12-31",
       "headline": "2023: 22,500 MWh",
       "equipmentRef": "",
-      "link": null
+      "link": null,
+      "evidence": null
     },
     {
       "n": 37,
@@ -460,7 +471,8 @@
       "eventDate": "2024-03",
       "headline": "Dispute opened over the Sep 2022 claim",
       "equipmentRef": "Inverter 2",
-      "link": "claim"
+      "link": "claim",
+      "evidence": "verrow/dispute"
     },
     {
       "n": 38,
@@ -472,7 +484,8 @@
       "eventDate": "2024-05",
       "headline": "Further work on cable section C",
       "equipmentRef": "Cable section C",
-      "link": null
+      "link": null,
+      "evidence": "verrow/cablePending"
     },
     {
       "n": 39,
@@ -506,7 +519,8 @@
       "eventDate": "2022-08",
       "headline": "Corrective work, second call-out",
       "equipmentRef": "Inverter 2",
-      "link": null
+      "link": null,
+      "evidence": "verrow/lateSecondCallout"
     },
     {
       "n": 43,
@@ -518,7 +532,8 @@
       "eventDate": "2024-12-31",
       "headline": "2024: 25,800 MWh",
       "equipmentRef": "",
-      "link": null
+      "link": null,
+      "evidence": null
     },
     {
       "n": 44,
@@ -565,7 +580,8 @@
       "eventDate": "2025-03",
       "headline": "Annual visit",
       "equipmentRef": "",
-      "link": null
+      "link": null,
+      "evidence": null
     },
     {
       "n": 50,
@@ -584,7 +600,8 @@
       "eventDate": "2025-08",
       "headline": "Insulation work",
       "equipmentRef": "Cable section C",
-      "link": null
+      "link": null,
+      "evidence": null
     },
     {
       "n": 52,
@@ -603,7 +620,8 @@
       "eventDate": "2025-12-31",
       "headline": "2025: 25,500 MWh",
       "equipmentRef": "",
-      "link": null
+      "link": null,
+      "evidence": null
     },
     {
       "n": 54,
@@ -615,7 +633,8 @@
       "eventDate": "2026-03",
       "headline": "Property damage (all risk), Ashcomb Insurance, 03/2026-03/2027",
       "equipmentRef": "",
-      "link": null
+      "link": null,
+      "evidence": null
     },
     {
       "n": 55,
@@ -627,7 +646,8 @@
       "eventDate": "2026-03",
       "headline": "Business interruption, Ashcomb Insurance, 03/2026-03/2027",
       "equipmentRef": "",
-      "link": null
+      "link": null,
+      "evidence": null
     },
     {
       "n": 56,
@@ -639,7 +659,8 @@
       "eventDate": "2026-03",
       "headline": "General liability, Ashcomb Insurance, 03/2026-03/2027",
       "equipmentRef": "",
-      "link": null
+      "link": null,
+      "evidence": null
     },
     {
       "n": 57,
@@ -651,7 +672,8 @@
       "eventDate": "2026-03",
       "headline": "Annual visit",
       "equipmentRef": "",
-      "link": null
+      "link": null,
+      "evidence": null
     },
     {
       "n": 58,
@@ -670,7 +692,8 @@
       "eventDate": "2026-09-30",
       "headline": "2026 (Jan-Sep): 21,400 MWh",
       "equipmentRef": "",
-      "link": null
+      "link": null,
+      "evidence": null
     }
   ]
 }

@@ -1,0 +1,17 @@
+FICTIONAL DOCUMENT - asset passport demo (testnet). Not a real site, company, person or event.
+
+INSPECTION REPORT
+Asset: Verrow Solar (AP-0002)
+Provider: Brennick O&M
+Date: October 2022
+
+Area: DC cabling, cable section C (between combiner boxes and Inverter 2).
+Found: insulation degradation on a run of cable section C; visible cracking at
+two points; insulation resistance below the commissioning value.
+Work done: temporary repair - affected points wrapped and sealed.
+Assessment by the provider: the temporary repair is not a permanent solution;
+the run should be replaced.
+Equipment: Cable section C
+Status: open - permanent repair recommended.
+
+Technician: Field technician, Brennick O&M

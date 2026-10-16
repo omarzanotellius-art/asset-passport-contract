@@ -12,9 +12,14 @@ const ALLOWED_STATE_CHANGING = [
   "withdrawInvitation", // C2-C3
   "acceptRole", // C3
   "revokeRole", // C2, C7
+  "addUnit", // B1-B2, B7
+  "replaceUnit", // B1, B6
+  "extendWarranty", // B1, B7
+  "confirmProposal", // B1
+  "withdrawProposal", // B1
 ];
 
-describe("AssetPassport interface (rules A8, C11)", () => {
+describe("AssetPassport interface (rules A8, C11, B12)", () => {
   it("has no state-changing functions other than the allowed list", async () => {
     const artifact = await hre.artifacts.readArtifact("AssetPassport");
     const changing = artifact.abi

@@ -1,0 +1,497 @@
+{
+  "format": "asset-passport demo actions v1",
+  "dates": "YYYY-MM = 1st of the month, YYYY-MM-DD = that day; times are 12:00 UTC",
+  "note": "Wallets are named; real Amoy addresses are attached in Stage 2 part D from the encrypted keystore. 'date' is the simulated recorded date (overlay file, D51); the chain records the real time of the live run.",
+  "assetNo": "AP-0001",
+  "actions": [
+    {
+      "n": 1,
+      "date": "2021-07",
+      "by": "larkmoor",
+      "do": "registerAsset",
+      "identity": {
+        "name": "Wildrye Solar",
+        "solar": true,
+        "battery": false,
+        "state": "California",
+        "county": "Fresno County",
+        "municipality": "[Municipality A]",
+        "capacityKwAc": 10000,
+        "epc": "Kestrand Builders",
+        "spv": "Wildrye Solar LLC",
+        "legalAddress": "100 Example Avenue, Suite 210, Fresno, CA 93700"
+      }
+    },
+    {
+      "n": 2,
+      "date": "2021-07",
+      "by": "larkmoor",
+      "do": "inviteRole",
+      "wallet": "tavren",
+      "role": "AssetManager",
+      "company": "Tavren Asset Management"
+    },
+    {
+      "n": 3,
+      "date": "2021-07",
+      "by": "tavren",
+      "do": "acceptRole"
+    },
+    {
+      "n": 4,
+      "date": "2021-07",
+      "by": "larkmoor",
+      "do": "inviteRole",
+      "wallet": "tarrow",
+      "role": "OmProvider",
+      "company": "Tarrow Field Services"
+    },
+    {
+      "n": 5,
+      "date": "2021-07",
+      "by": "tarrow",
+      "do": "acceptRole"
+    },
+    {
+      "n": 6,
+      "date": "2021-07",
+      "by": "larkmoor",
+      "do": "submitEntry",
+      "key": "commissioning",
+      "category": 1,
+      "eventDate": "2021-07",
+      "headline": "10 MWac, original, EPC: Kestrand Builders",
+      "equipmentRef": "",
+      "link": null
+    },
+    {
+      "n": 7,
+      "date": "2021-07",
+      "by": "larkmoor",
+      "do": "addUnit",
+      "unit": {
+        "key": "w_inv1",
+        "name": "Inverter 1 (central)",
+        "system": 1,
+        "oem": "Brindle Inverter Systems",
+        "model": "CI-3400",
+        "rating": "3,400 kWac",
+        "quantity": 1,
+        "inService": "2021-07",
+        "isPart": false,
+        "warrantyStart": "2021-07",
+        "warrantyEnd": "2026-07"
+      }
+    },
+    {
+      "n": 8,
+      "date": "2021-07",
+      "by": "larkmoor",
+      "do": "addUnit",
+      "unit": {
+        "key": "w_inv2",
+        "name": "Inverter 2 (central)",
+        "system": 1,
+        "oem": "Brindle Inverter Systems",
+        "model": "CI-3400",
+        "rating": "3,400 kWac",
+        "quantity": 1,
+        "inService": "2021-07",
+        "isPart": false,
+        "warrantyStart": "2021-07",
+        "warrantyEnd": "2026-07"
+      }
+    },
+    {
+      "n": 9,
+      "date": "2021-07",
+      "by": "larkmoor",
+      "do": "addUnit",
+      "unit": {
+        "key": "w_inv3",
+        "name": "Inverter 3 (central)",
+        "system": 1,
+        "oem": "Brindle Inverter Systems",
+        "model": "CI-3400",
+        "rating": "3,400 kWac",
+        "quantity": 1,
+        "inService": "2021-07",
+        "isPart": false,
+        "warrantyStart": "2021-07",
+        "warrantyEnd": "2026-07"
+      }
+    },
+    {
+      "n": 10,
+      "date": "2021-07",
+      "by": "larkmoor",
+      "do": "addUnit",
+      "unit": {
+        "key": "w_mod",
+        "name": "PV modules (bifacial)",
+        "system": 2,
+        "oem": "Tolven Solar Modules",
+        "model": "M-545",
+        "rating": "545 W each",
+        "quantity": 24000,
+        "inService": "2021-07",
+        "isPart": false,
+        "warrantyStart": "2021-07",
+        "warrantyEnd": "2033-07"
+      }
+    },
+    {
+      "n": 11,
+      "date": "2021-07",
+      "by": "larkmoor",
+      "do": "addUnit",
+      "unit": {
+        "key": "w_tx1",
+        "name": "Transformer 1 (with Inverter 1), 0.6/21 kV",
+        "system": 3,
+        "oem": "Harnell Transformer Co.",
+        "model": "T-3.5",
+        "rating": "3.5 MVA",
+        "quantity": 1,
+        "inService": "2021-07",
+        "isPart": false,
+        "warrantyStart": "2021-07",
+        "warrantyEnd": "2026-07"
+      }
+    },
+    {
+      "n": 12,
+      "date": "2021-07",
+      "by": "larkmoor",
+      "do": "addUnit",
+      "unit": {
+        "key": "w_tx2",
+        "name": "Transformer 2 (with Inverter 2), 0.6/21 kV",
+        "system": 3,
+        "oem": "Harnell Transformer Co.",
+        "model": "T-3.5",
+        "rating": "3.5 MVA",
+        "quantity": 1,
+        "inService": "2021-07",
+        "isPart": false,
+        "warrantyStart": "2021-07",
+        "warrantyEnd": "2026-07"
+      }
+    },
+    {
+      "n": 13,
+      "date": "2021-07",
+      "by": "larkmoor",
+      "do": "addUnit",
+      "unit": {
+        "key": "w_tx3",
+        "name": "Transformer 3 (with Inverter 3), 0.6/21 kV",
+        "system": 3,
+        "oem": "Harnell Transformer Co.",
+        "model": "T-3.5",
+        "rating": "3.5 MVA",
+        "quantity": 1,
+        "inService": "2021-07",
+        "isPart": false,
+        "warrantyStart": "2021-07",
+        "warrantyEnd": "2026-07"
+      }
+    },
+    {
+      "n": 14,
+      "date": "2021-07",
+      "by": "larkmoor",
+      "do": "addUnit",
+      "unit": {
+        "key": "w_trk",
+        "name": "Tracker structure",
+        "system": 4,
+        "oem": "Pivara Tracking Systems",
+        "model": "ST-1",
+        "rating": "",
+        "quantity": 267,
+        "inService": "2021-07",
+        "isPart": false,
+        "warrantyStart": "2021-07",
+        "warrantyEnd": "2031-07"
+      }
+    },
+    {
+      "n": 15,
+      "date": "2021-07",
+      "by": "larkmoor",
+      "do": "addUnit",
+      "unit": {
+        "key": "w_drv",
+        "name": "Drives and controllers",
+        "system": 4,
+        "oem": "Pivara Tracking Systems",
+        "model": "ST-1 Drive",
+        "rating": "",
+        "quantity": 267,
+        "inService": "2021-07",
+        "isPart": true,
+        "warrantyStart": "2021-07",
+        "warrantyEnd": "2026-07"
+      }
+    },
+    {
+      "n": 16,
+      "date": "2021-07",
+      "by": "larkmoor",
+      "do": "extendWarranty",
+      "unit": "w_inv1",
+      "newEnd": "2031-07"
+    },
+    {
+      "n": 17,
+      "date": "2021-07",
+      "by": "larkmoor",
+      "do": "extendWarranty",
+      "unit": "w_inv2",
+      "newEnd": "2031-07"
+    },
+    {
+      "n": 18,
+      "date": "2021-07",
+      "by": "larkmoor",
+      "do": "extendWarranty",
+      "unit": "w_inv3",
+      "newEnd": "2031-07"
+    },
+    {
+      "n": 19,
+      "date": "2022-01",
+      "by": "larkmoor",
+      "do": "submitEntry",
+      "key": "prod2021",
+      "category": 9,
+      "eventDate": "2021-12-31",
+      "headline": "2021 (from Jul): 12,900 MWh",
+      "equipmentRef": "",
+      "link": null
+    },
+    {
+      "n": 20,
+      "date": "2022-03",
+      "by": "tarrow",
+      "do": "submitEntry",
+      "key": "visit2022",
+      "category": 2,
+      "eventDate": "2022-03",
+      "headline": "Annual visit",
+      "equipmentRef": "",
+      "link": null
+    },
+    {
+      "n": 21,
+      "date": "2022-03",
+      "by": "tavren",
+      "do": "confirmEntry",
+      "entry": "visit2022"
+    },
+    {
+      "n": 22,
+      "date": "2023-01",
+      "by": "larkmoor",
+      "do": "submitEntry",
+      "key": "prod2022",
+      "category": 9,
+      "eventDate": "2022-12-31",
+      "headline": "2022: 26,200 MWh",
+      "equipmentRef": "",
+      "link": null
+    },
+    {
+      "n": 23,
+      "date": "2023-03",
+      "by": "tarrow",
+      "do": "submitEntry",
+      "key": "visit2023",
+      "category": 2,
+      "eventDate": "2023-03",
+      "headline": "Annual visit",
+      "equipmentRef": "",
+      "link": null
+    },
+    {
+      "n": 24,
+      "date": "2023-03",
+      "by": "tavren",
+      "do": "confirmEntry",
+      "entry": "visit2023"
+    },
+    {
+      "n": 25,
+      "date": "2023-06",
+      "by": "tarrow",
+      "do": "submitEntry",
+      "key": "trackerMotor",
+      "category": 3,
+      "eventDate": "2023-06",
+      "headline": "Tracker motor replaced",
+      "equipmentRef": "Trackers",
+      "link": null
+    },
+    {
+      "n": 26,
+      "date": "2023-06",
+      "by": "tavren",
+      "do": "confirmEntry",
+      "entry": "trackerMotor"
+    },
+    {
+      "n": 27,
+      "date": "2024-01",
+      "by": "larkmoor",
+      "do": "submitEntry",
+      "key": "prod2023",
+      "category": 9,
+      "eventDate": "2023-12-31",
+      "headline": "2023: 25,000 MWh",
+      "equipmentRef": "",
+      "link": null
+    },
+    {
+      "n": 28,
+      "date": "2024-03",
+      "by": "tarrow",
+      "do": "submitEntry",
+      "key": "visit2024",
+      "category": 2,
+      "eventDate": "2024-03",
+      "headline": "Annual visit",
+      "equipmentRef": "",
+      "link": null
+    },
+    {
+      "n": 29,
+      "date": "2024-03",
+      "by": "tavren",
+      "do": "confirmEntry",
+      "entry": "visit2024"
+    },
+    {
+      "n": 30,
+      "date": "2024-07",
+      "by": "larkmoor",
+      "do": "submitEntry",
+      "key": "omRenewed",
+      "category": 10,
+      "eventDate": "2024-07",
+      "headline": "O&M contract renewed, same provider",
+      "equipmentRef": "",
+      "link": null
+    },
+    {
+      "n": 31,
+      "date": "2025-01",
+      "by": "larkmoor",
+      "do": "submitEntry",
+      "key": "prod2024",
+      "category": 9,
+      "eventDate": "2024-12-31",
+      "headline": "2024: 26,100 MWh",
+      "equipmentRef": "",
+      "link": null
+    },
+    {
+      "n": 32,
+      "date": "2025-03",
+      "by": "tarrow",
+      "do": "submitEntry",
+      "key": "visit2025",
+      "category": 2,
+      "eventDate": "2025-03",
+      "headline": "Annual visit",
+      "equipmentRef": "",
+      "link": null
+    },
+    {
+      "n": 33,
+      "date": "2025-03",
+      "by": "tavren",
+      "do": "confirmEntry",
+      "entry": "visit2025"
+    },
+    {
+      "n": 34,
+      "date": "2026-01",
+      "by": "larkmoor",
+      "do": "submitEntry",
+      "key": "prod2025",
+      "category": 9,
+      "eventDate": "2025-12-31",
+      "headline": "2025: 25,800 MWh",
+      "equipmentRef": "",
+      "link": null
+    },
+    {
+      "n": 35,
+      "date": "2026-03",
+      "by": "tarrow",
+      "do": "submitEntry",
+      "key": "visit2026",
+      "category": 2,
+      "eventDate": "2026-03",
+      "headline": "Annual visit",
+      "equipmentRef": "",
+      "link": null
+    },
+    {
+      "n": 36,
+      "date": "2026-03",
+      "by": "tavren",
+      "do": "confirmEntry",
+      "entry": "visit2026"
+    },
+    {
+      "n": 37,
+      "date": "2026-07",
+      "by": "larkmoor",
+      "do": "submitEntry",
+      "key": "polProperty",
+      "category": 14,
+      "eventDate": "2026-07",
+      "headline": "Property damage (all risk), Granmoor Insurance, 07/2026-07/2027",
+      "equipmentRef": "",
+      "link": null
+    },
+    {
+      "n": 38,
+      "date": "2026-07",
+      "by": "larkmoor",
+      "do": "submitEntry",
+      "key": "polBI",
+      "category": 14,
+      "eventDate": "2026-07",
+      "headline": "Business interruption, Granmoor Insurance, 07/2026-07/2027",
+      "equipmentRef": "",
+      "link": null
+    },
+    {
+      "n": 39,
+      "date": "2026-07",
+      "by": "larkmoor",
+      "do": "submitEntry",
+      "key": "polGL",
+      "category": 14,
+      "eventDate": "2026-07",
+      "headline": "General liability, Granmoor Insurance, 07/2026-07/2027",
+      "equipmentRef": "",
+      "link": null
+    },
+    {
+      "n": 40,
+      "date": "2026-10",
+      "by": "larkmoor",
+      "do": "submitEntry",
+      "key": "prod2026",
+      "category": 9,
+      "eventDate": "2026-09-30",
+      "headline": "2026 (Jan-Sep): 21,500 MWh",
+      "equipmentRef": "",
+      "link": null
+    }
+  ]
+}

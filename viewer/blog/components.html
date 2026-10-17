@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Components for the passport post (preview)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@200;300;400;500&family=Plus+Jakarta+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* Preview only: the blog's own page styles (from post-004), so the components look as they will in the post. */
+  :root{ --navy:#0F1E38; --terracotta:#B07A4E; --bronze:#8C6A4F; --terracotta-tint:#F4ECE6; --slate:#4A5568; --cream:#F5F2EE; --line: rgba(15,30,56,0.14); }
+  *{box-sizing:border-box;} html,body{margin:0;background:var(--cream);color:var(--navy);font-family:'Plus Jakarta Sans',sans-serif;}
+  .article-wrap{max-width:760px;margin:0 auto;padding:48px 20px 80px;}
+  .article-body h2{font-family:'Epilogue',Georgia,serif;font-weight:400;font-size:21px;line-height:1.4;margin:52px 0 18px;}
+  .article-body p{font-size:15px;line-height:1.75;color:var(--slate);margin:0 0 20px;}
+  .preview-note{font-size:12px;color:var(--slate);border:1px dashed var(--line);padding:10px 12px;border-radius:8px;}
+  @media (max-width:600px){ .article-body h2{font-size:18px;} }
+
+/* ===================== COPY FROM HERE: component styles — put once in the post's <style> ===================== */
+  .pp-covers{display:flex;gap:28px;justify-content:center;flex-wrap:wrap;margin:36px 0 12px;}
+  .pp-cover{display:flex;flex-direction:column;align-items:center;justify-content:space-between;width:180px;height:252px;padding:22px 14px 18px;
+    background:var(--navy);border-radius:5px 12px 12px 5px;box-shadow:0 14px 26px rgba(15,30,56,0.22), inset 8px 0 0 rgba(255,255,255,0.05);
+    color:#D9BE8C;text-decoration:none;text-align:center;transition:transform .15s ease;}
+  .pp-cover:hover,.pp-cover:focus-visible{transform:translateY(-3px);}
+  .pp-cover:focus-visible{outline:3px solid var(--bronze);outline-offset:4px;}
+  .pp-cover .pp-cty{font-family:'Epilogue',Georgia,serif;font-size:9px;letter-spacing:.2em;}
+  .pp-cover .pp-ttl{font-family:'Epilogue',Georgia,serif;font-weight:500;font-size:13px;letter-spacing:.18em;}
+  .pp-cover .pp-nm{font-size:12px;letter-spacing:.06em;margin-top:6px;}
+  .pp-cover .pp-no{font-family:'Space Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.08em;opacity:.9;}
+  .pp-caption{text-align:center;font-size:12.5px;color:var(--slate);margin:0 0 28px;}
+  .pp-compare{border-top:1px solid var(--line);margin:8px 0 28px;}
+  .pp-row{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:6px 18px;align-items:center;padding:12px 2px;border-bottom:1px solid var(--line);}
+  .pp-row .pp-page{font-size:14.5px;color:var(--navy);}
+  .pp-row a{display:inline-flex;align-items:center;min-height:44px;padding:0 4px;font-size:13.5px;color:#7A5A40;text-decoration:underline;text-underline-offset:3px;}
+  .pp-row a:hover{color:var(--navy);}
+  .pp-faq h3{font-size:15px;font-weight:500;color:var(--navy);margin:26px 0 8px;}
+  .pp-note{font-size:12.5px;line-height:1.7;color:var(--slate);border-top:1px solid var(--line);padding-top:18px;margin-top:40px;}
+  .pp-note p{font-size:12.5px !important;line-height:1.7 !important;margin:0 0 10px !important;}
+  .pp-cta{margin:32px 0 8px;}
+  .pp-cta a.pp-btn{display:inline-flex;align-items:center;min-height:44px;padding:10px 20px;border-radius:8px;background:var(--navy);color:#fff;text-decoration:none;font-size:14.5px;line-height:1.4;}
+  .pp-cta a.pp-btn:hover{background:#1c2f52;}
+  .pp-cta .pp-small{font-size:12px;color:var(--slate);margin:10px 0 0;}
+  .pp-cta .pp-small a{color:#7A5A40;}
+  @media (max-width:600px){ .pp-cover{width:150px;height:212px;} .pp-cover .pp-ttl{font-size:12px;letter-spacing:.1em;white-space:nowrap;} .pp-row{grid-template-columns:1fr auto auto;} }
+/* ===================== TO HERE ===================== */
+</style>
+</head>
+<body>
+<div class="article-wrap">
+<p class="preview-note">Preview of the components for the passport post. Copy each marked block into the post; the text around them is yours to write.</p>
+<div class="article-body">
+
+<!-- ===================== COMPONENT 1: the two passports (E1) ===================== -->
+<div class="pp-covers">
+  <a class="pp-cover" href="/passport/?asset=AP-0001" aria-label="Open the asset passport of Wildrye Solar, AP-0001">
+    <span class="pp-cty">FRESNO COUNTY · CALIFORNIA</span>
+    <svg width="64" height="64" viewBox="0 0 112 112" fill="none" stroke="#D9BE8C" stroke-width="2" aria-hidden="true"><circle cx="56" cy="44" r="16"/><line x1="56" y1="14" x2="56" y2="22"/><line x1="26" y1="44" x2="34" y2="44"/><line x1="78" y1="44" x2="86" y2="44"/><line x1="35" y1="23" x2="40" y2="28"/><line x1="77" y1="23" x2="72" y2="28"/><path d="M18 98 L34 76 H78 L94 98 Z"/><line x1="45" y1="76" x2="40" y2="98"/><line x1="56" y1="76" x2="56" y2="98"/><line x1="67" y1="76" x2="72" y2="98"/><line x1="26" y1="87" x2="86" y2="87"/></svg>
+    <span><span class="pp-ttl">ASSET PASSPORT</span><br><span class="pp-nm">Wildrye Solar</span></span>
+    <span class="pp-no">AP-0001</span>
+  </a>
+  <a class="pp-cover" href="/passport/?asset=AP-0002" aria-label="Open the asset passport of Verrow Solar, AP-0002">
+    <span class="pp-cty">FRESNO COUNTY · CALIFORNIA</span>
+    <svg width="64" height="64" viewBox="0 0 112 112" fill="none" stroke="#D9BE8C" stroke-width="2" aria-hidden="true"><circle cx="56" cy="44" r="16"/><line x1="56" y1="14" x2="56" y2="22"/><line x1="26" y1="44" x2="34" y2="44"/><line x1="78" y1="44" x2="86" y2="44"/><line x1="35" y1="23" x2="40" y2="28"/><line x1="77" y1="23" x2="72" y2="28"/><path d="M18 98 L34 76 H78 L94 98 Z"/><line x1="45" y1="76" x2="40" y2="98"/><line x1="56" y1="76" x2="56" y2="98"/><line x1="67" y1="76" x2="72" y2="98"/><line x1="26" y1="87" x2="86" y2="87"/></svg>
+    <span><span class="pp-ttl">ASSET PASSPORT</span><br><span class="pp-nm">Verrow Solar</span></span>
+    <span class="pp-no">AP-0002</span>
+  </a>
+</div>
+<p class="pp-caption">Two fictional 10 MWac solar farms, built the same month in the same county. Open either passport.</p>
+
+<!-- ===================== COMPONENT 2: pages worth comparing (E1, neutral: names pages, never conclusions — D19) ===================== -->
+<h2>The same pages, side by side</h2>
+<p>Open each page in both passports and compare them.</p>
+<div class="pp-compare">
+  <div class="pp-row"><span class="pp-page">Data page</span><a href="/passport/?asset=AP-0001#data">Wildrye</a><a href="/passport/?asset=AP-0002#data">Verrow</a></div>
+  <div class="pp-row"><span class="pp-page">Maintenance, 2022</span><a href="/passport/?asset=AP-0001#maintenance-2022">Wildrye</a><a href="/passport/?asset=AP-0002#maintenance-2022">Verrow</a></div>
+  <div class="pp-row"><span class="pp-page">Maintenance, 2024</span><a href="/passport/?asset=AP-0001#maintenance-2024">Wildrye</a><a href="/passport/?asset=AP-0002#maintenance-2024">Verrow</a></div>
+  <div class="pp-row"><span class="pp-page">Equipment: inverters</span><a href="/passport/?asset=AP-0001#equipment">Wildrye</a><a href="/passport/?asset=AP-0002#equipment">Verrow</a></div>
+  <div class="pp-row"><span class="pp-page">Warranty claims and disputes</span><a href="/passport/?asset=AP-0001#claims">Wildrye</a><a href="/passport/?asset=AP-0002#claims">Verrow</a></div>
+  <div class="pp-row"><span class="pp-page">Awaiting confirmation</span><a href="/passport/?asset=AP-0001#pending">Wildrye</a><a href="/passport/?asset=AP-0002#pending">Verrow</a></div>
+  <div class="pp-row"><span class="pp-page">Production history</span><a href="/passport/?asset=AP-0001#production">Wildrye</a><a href="/passport/?asset=AP-0002#production">Verrow</a></div>
+  <div class="pp-row"><span class="pp-page">Wallets</span><a href="/passport/?asset=AP-0001#wallets">Wildrye</a><a href="/passport/?asset=AP-0002#wallets">Verrow</a></div>
+</div>
+
+<!-- ===================== COMPONENT 3: questions (D36) ===================== -->
+<div class="pp-faq">
+<h2>Questions you might have</h2>
+<h3>What does the blockchain add over a signed, dated PDF?</h3>
+<p>Three narrow things. Nobody, including whoever runs these pages, can quietly change or remove what is recorded. The date each entry was recorded is set by the network, so a history filled in just before a sale shows as such. And the record does not depend on any one party: it moves with the asset when it is sold. It does not prove an entry is true, or that nothing is missing.</p>
+<h3>Why would an O&amp;M provider record its work here?</h3>
+<p>That is the main open question, and this demo does not answer it: its entries were written by a script. One plausible reason is that a dated record of its own work, which nobody can change, protects a provider when there is a dispute over who caused a failure. In real use, the owner would decide which wording is public.</p>
+<h3>Isn't the second farm's story staged?</h3>
+<p>Yes, deliberately, so the idea is visible in two minutes. Real histories are messier, which is part of the case for recording work as it happens rather than reconstructing it later.</p>
+</div>
+
+<!-- ===================== COMPONENT 4: call to action (D29) — optional in the post; it is also on every passport page ===================== -->
+<div class="pp-cta">
+  <a class="pp-btn" href="mailto:support@ontoken.cloud?subject=Asset%20passport%20pilot&amp;body=Name%3A%0ARole%20(owner%2C%20asset%20manager%2C%20O%26M%20provider%2C%20other)%3A%0AAsset%20type%20and%20size%20(optional)%3A">I am interested in running a pilot with a real asset, no commitments</a>
+  <p class="pp-small">This opens an email to OnToken, LLC, which receives your details. See the <a href="https://ontoken.cloud">privacy policy on ontoken.cloud</a>.</p>
+</div>
+
+<!-- ===================== COMPONENT 5: the small print (D11, D28, D38, D51, D31) — put at the end of the post ===================== -->
+<div class="pp-note">
+  <p>This is a demonstration, not a product or service offering. It runs on Polygon Amoy, a public <strong>test</strong> network that may be retired; a full copy of the record is kept in the project's public repository.</p>
+  <p>The location is real; the farms, companies, people and events are fictional. Recorded dates shown in the passports are simulated; the blockchain explorer shows when each entry was actually written. A few data-page details are illustrative and not recorded on the network; each passport's key explains which.</p>
+  <p>In real use, the owner would choose, entry by entry, which wording is public. Everything else would stay as a fingerprint, readable in full only by people the owner authorizes. Anything published on a blockchain is permanent and cannot be removed.</p>
+</div>
+
+</div>
+</div>
+</body>
+</html>

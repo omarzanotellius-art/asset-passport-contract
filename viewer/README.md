@@ -72,6 +72,18 @@ Run after `viewer-data.ts`. It reads both passports with **the same loader the p
 
 Tested: with the network cut, both passports render from the snapshot with text identical to the live read on every spread (14 of 14 each), banner and date shown; a deliberately varying read was refused, leaving the previous snapshot untouched.
 
+## `blog/components.html` — for the passport post (Stage 3E)
+
+A preview page with ready-made blocks for the post, in the blog's styles. Copy the marked blocks into the post; the writing around them is Omar's.
+
+1. **The two passports** — covers linking to each passport.
+2. **The same pages, side by side** — a neutral list of eight pages (data page, maintenance 2022 and 2024, inverters, claims, awaiting confirmation, production, wallets), each linking to that page in both passports. It names pages, never conclusions (D19).
+3. **Questions you might have** — the three FAQ answers (D36).
+4. **Call to action** — optional in the post; it is on every passport page too (D29).
+5. **The small print** — test network, fiction, simulated dates, illustrative fields, the real-use model (D11, D28, D38, D51).
+
+Tested: all 18 passport links open the right passport on the right page; no sideways scrolling at 390 and 320 px; link colour `#7A5A40` on cream has 5.6:1 contrast (the blog's own `#B07A4E` has 3.3:1, below the 4.5:1 standard).
+
 ### Publishing (later)
 
-Copy `index.html`, `loader.mjs`, `lib/viem-2.56.8.js` and `data/` (including `snapshot.json`) into the blog repository's `passport/` folder.
+Copy `index.html`, `loader.mjs`, `lib/viem-2.56.8.js` and `data/` (including `snapshot.json`) into the blog repository's `passport/` folder — not `blog/`, `test/`, `README.md` or `lib/viem-entry.mjs`.

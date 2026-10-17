@@ -86,4 +86,16 @@ Tested: all 18 passport links open the right passport on the right page; no side
 
 ### Publishing (later)
 
-Copy `index.html`, `loader.mjs`, `lib/viem-2.56.8.js` and `data/` (including `snapshot.json`) into the blog repository's `passport/` folder — not `blog/`, `test/`, `README.md` or `lib/viem-entry.mjs`.
+```
+node scripts/build-publish.mjs
+```
+
+builds `publish/passport/` and `publish/passport.zip` with **exactly** the files the blog's `passport/` folder needs (the page, the loader, the viem bundle, the five data files) and **`SHA256SUMS`**, the fingerprint of each — published too, so anyone can check what the blog serves:
+
+```
+cd passport && sha256sum -c SHA256SUMS
+```
+
+It **refuses** to build when the data isn't for Polygon Amoy (`--rehearsal` allows local data, for testing only), when the snapshot and the settings point at different records, or when the viem bundle doesn't match its recorded fingerprint. `publish/` is not committed; it is rebuilt from committed files.
+
+Tested: refusal on local data, on one altered byte in the viem bundle, and on a snapshot from another contract; a rehearsal bundle verified with `sha256sum -c`; served on its own, both passports render with no missing files.

@@ -40,3 +40,28 @@ node viewer/test/compare-demo.mjs
 ```
 
 It compares the loader's output, field by field, with `test/expected-demo.json` — the reviewed interactive demo's data, without addresses and transaction links — and checks every row has its transaction. Tested both ways: a wrong dispute note and missing transaction links each make it fail.
+
+## `index.html` — the passport page (Stage 3C)
+
+The reviewed interactive demo's design, **unchanged in appearance** (D37), with its sample data replaced by the loader. What changed, and only this:
+
+- `assets()` returns the loader's data; explorer links (stamps, entries, current holder, last transfer — as in the design) point to the real transactions and addresses.
+- System names come from the loader; the "other passports" link and passport switching use `?asset=AP-000x`.
+- Sections can be linked: `?asset=AP-0002#maintenance-2024`, `#wallets`, `#claims`, …
+- Start-up reads the chain **in parallel** with a **12-second limit**; on failure or time-out it uses `data/snapshot.json` (3D) and shows the archived-copy banner.
+
+### Data files (`data/`, generated, not committed until the live run)
+
+```
+npx hardhat run scripts/viewer-data.ts --network <localhost|amoy>
+```
+
+writes `config.json` (network, contract, block range, explorer), `abi.json`, `overlay.json`, `illustrative.json` from a finished demo run.
+
+### Tested (headless Chromium, local chain, 2026-10-18)
+
+The text of **every spread of both passports** is identical to the reviewed demo's (14 of 14 each); no console errors; every explorer link is a real transaction (22 checked); the section link opens the right page; phone (390 px): no sideways scrolling; a dead network shows the failure message after 1.3 s, a silent one after the 12 s limit.
+
+### Publishing (later)
+
+Copy `index.html`, `loader.mjs`, `lib/viem-2.56.8.js` and `data/` into the blog repository's `passport/` folder.

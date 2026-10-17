@@ -192,10 +192,10 @@ class Component extends DCLogic {
     return [
       { isBox: true, isNote: false, isLink: false, w: '30px', h: '30px', border: '5px double #0F1E38', radius: '50%', text: 'Double-ring seal: commissioning, original or after a major intervention' },
       { isBox: true, isNote: false, isLink: false, w: '26px', h: '26px', border: '2px solid #3B4A6B', radius: '50%', text: 'Round stamp: scheduled visit' },
-      { isBox: false, isNote: true, isLink: false, text: 'Recorded date in bronze: recorded more than 30 days after the event' },
+      { isBox: false, isNote: true, isLink: false, text: 'Recorded date in bronze: recorded two or more months after the event' },
       { isBox: false, isNote: false, isLink: true, text: 'Every stamp and entry links to its transaction on the explorer' },
       { isBox: false, isNote: false, isLink: false, text: 'Maintenance pages list entries by the year they were recorded; the event date is shown on each entry.' },
-      { isBox: false, isNote: false, isLink: false, text: 'Recorded on the network: everything except a few data-page details (COD, developer, grid connection, DC capacity and ratio, energization, typology, orientation), which are illustrative in this demo.' },
+      { isBox: false, isNote: false, isLink: false, text: 'Recorded on the network: everything except a few details, which are illustrative in this demo: on the data page, COD, developer, grid connection, DC capacity and ratio, energization, typology and orientation; and the modules’ performance warranty.' },
       { isBox: false, isNote: false, isLink: false, text: 'Holder: the wallet that controls this record. It is not an ownership interest in the asset.' }
     ];
   }
@@ -628,7 +628,7 @@ window.__startPassport = function () {
     var single = mq.matches;
     var a = v.a;
     var html = '';
-    html += '<div class="disclosure">Demonstration on the Polygon Amoy test network, which may be retired. The location is real; the farms, companies, people and events are fictional. Recorded dates in this demo are simulated; the explorer shows when each entry was actually written. A few data-page details are illustrative and not recorded on the network; the key explains which.</div>';
+    html += '<div class="disclosure">Demonstration on the Polygon Amoy test network, which may be retired. The location is real; the farms, companies, people and events are fictional. Recorded dates in this demo are simulated; the explorer shows when each entry was actually written. A few details are illustrative and not recorded on the network; the key explains which.</div>';
     if (v.archived) html += '<div class="archived">Showing the archived copy of the record' + (window.__PASSPORT_SNAPSHOT_DATE ? ', made on ' + esc(window.__PASSPORT_SNAPSHOT_DATE) : '') + '. The live network is unavailable right now.</div>';
     html += '<div class="head"><div class="eyebrow">ASSET PASSPORT · ' + esc(a.assetNo) + ' · DEMO</div><h1>' + esc(a.name) + '</h1>' +
       '<div class="meta"><span class="src"><span class="dot" style="background:' + v.sourceDot + '"></span><span>' + esc(v.sourceLabel) + '</span></span>' +

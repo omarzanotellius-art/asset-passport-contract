@@ -62,6 +62,10 @@ writes `config.json` (network, contract, block range, explorer), `abi.json`, `ov
 
 The text of **every spread of both passports** is identical to the reviewed demo's (14 of 14 each); no console errors; every explorer link is a real transaction (22 checked); the section link opens the right page; phone (390 px): no sideways scrolling; a dead network shows the failure message after 1.3 s, a silent one after the 12 s limit.
 
+### Disclosures reviewed (Stage 3E, E4 — page side)
+
+Every disclosure on the page was checked against D11, D27, D28, D29, D31, D32, D38, D47, D51 and D85. Two fixes, also made in the reference demo: the illustrative details now include the **modules' performance warranty** (not only data-page fields), and the bronze recorded date is described exactly as the page applies it — **two or more months** after the event (not "more than 30 days"). The key page still fits at 1280, 390 and 320 px; every spread remains identical to the reference (14 of 14 each). The post side of the review waits for the post.
+
 ### Fallback snapshot (Stage 3D)
 
 ```
@@ -95,6 +99,8 @@ builds `publish/passport/` and `publish/passport.zip` with **exactly** the files
 ```
 cd passport && sha256sum -c SHA256SUMS
 ```
+
+**Launch prerequisite (E4, finding 3):** the page says *"a full copy of the record is kept in the public repository."* Before publishing, make `asset-passport-contract` public and turn that phrase into a link to it — otherwise the sentence is not true.
 
 It **refuses** to build when the data isn't for Polygon Amoy (`--rehearsal` allows local data, for testing only), when the snapshot and the settings point at different records, or when the viem bundle doesn't match its recorded fingerprint. `publish/` is not committed; it is rebuilt from committed files.
 

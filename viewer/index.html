@@ -500,7 +500,7 @@ class Component extends DCLogic {
     var curView = spreadView(curSp);
     return {
       a: a, archived: archived, review: review, interactive: !review,
-      sourceLabel: archived ? 'Showing the archived copy from the repository' : 'Reading live from ' + (window.__PASSPORT_NETWORK_NAME || 'Polygon Amoy'),
+      sourceLabel: archived ? 'Showing the archived copy' + (window.__PASSPORT_SNAPSHOT_DATE ? ' of ' + window.__PASSPORT_SNAPSHOT_DATE : '') : 'Reading live from ' + (window.__PASSPORT_NETWORK_NAME || 'Polygon Amoy'),
       sourceDot: archived ? '#8C6A4F' : '#2F6F4F',
       others: others,
       bookletLabel: 'Asset passport of ' + a.name + '. Use the arrow keys or the buttons below to turn pages.',
@@ -629,7 +629,7 @@ window.__startPassport = function () {
     var a = v.a;
     var html = '';
     html += '<div class="disclosure">Demonstration on the Polygon Amoy test network, which may be retired. The location is real; the farms, companies, people and events are fictional. Recorded dates in this demo are simulated; the explorer shows when each entry was actually written. A few data-page details are illustrative and not recorded on the network; the key explains which.</div>';
-    if (v.archived) html += '<div class="archived">Showing the archived copy of the record. The live network is unavailable right now.</div>';
+    if (v.archived) html += '<div class="archived">Showing the archived copy of the record' + (window.__PASSPORT_SNAPSHOT_DATE ? ', made on ' + esc(window.__PASSPORT_SNAPSHOT_DATE) : '') + '. The live network is unavailable right now.</div>';
     html += '<div class="head"><div class="eyebrow">ASSET PASSPORT · ' + esc(a.assetNo) + ' · DEMO</div><h1>' + esc(a.name) + '</h1>' +
       '<div class="meta"><span class="src"><span class="dot" style="background:' + v.sourceDot + '"></span><span>' + esc(v.sourceLabel) + '</span></span>' +
       '<span>Other passports in this demo: ' + Object.keys(comp.assets()).filter(function (k) { return k !== a.assetNo; }).map(function (k) {
@@ -729,7 +729,11 @@ try {
   ]);
 } catch (err) {
   console.warn('Live read failed, using the archived copy:', err && err.message);
-  try { data = (await getJson('snapshot.json')).passports; window.__PASSPORT_ARCHIVED = true; } catch (e2) { data = null; }
+  try {
+    const snap = await getJson('snapshot.json');
+    data = snap.passports; window.__PASSPORT_ARCHIVED = true;
+    window.__PASSPORT_SNAPSHOT_DATE = new Date(snap.madeAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+  } catch (e2) { data = null; }
 }
 if (!data) {
   app.innerHTML = '<p style="max-width:640px;margin:80px auto;text-align:center;color:#4A5568">The passport could not be read from the network right now, and no archived copy is available. Please try again later.</p>';

@@ -62,6 +62,16 @@ writes `config.json` (network, contract, block range, explorer), `abi.json`, `ov
 
 The text of **every spread of both passports** is identical to the reviewed demo's (14 of 14 each); no console errors; every explorer link is a real transaction (22 checked); the section link opens the right page; phone (390 px): no sideways scrolling; a dead network shows the failure message after 1.3 s, a silent one after the 12 s limit.
 
+### Fallback snapshot (Stage 3D)
+
+```
+npx hardhat run scripts/viewer-snapshot.ts --network <localhost|amoy>
+```
+
+Run after `viewer-data.ts`. It reads both passports with **the same loader the page uses**, twice, and saves `data/snapshot.json` only if both reads are identical (it refuses otherwise). The page uses it only when the live read fails or exceeds 12 seconds, with a banner saying when the copy was made. Re-run it whenever the record changes — for the demo, once after the live run.
+
+Tested: with the network cut, both passports render from the snapshot with text identical to the live read on every spread (14 of 14 each), banner and date shown; a deliberately varying read was refused, leaving the previous snapshot untouched.
+
 ### Publishing (later)
 
-Copy `index.html`, `loader.mjs`, `lib/viem-2.56.8.js` and `data/` into the blog repository's `passport/` folder.
+Copy `index.html`, `loader.mjs`, `lib/viem-2.56.8.js` and `data/` (including `snapshot.json`) into the blog repository's `passport/` folder.

@@ -34,14 +34,15 @@ type Farm = (typeof FARMS)[number];
 
 // S3'/S8': gas per wallet MEASURED in the local rehearsal; filled in after it (rounded up).
 // The live run refuses to start while these are missing.
-// Local rehearsal 2026-10-16 (funder also pays the 9 top-ups on Amoy: + 9 x 21,000).
+// Local rehearsal 2026-10-16, re-measured 2026-10-18 after the holder-name entries
+// (funder also pays the 9 top-ups on Amoy: + 9 x 21,000).
 const MEASURED_GAS: Partial<Record<WalletName, bigint>> = {
   funder: 4_500_000n,   // measured 4,209,764 (deploy) + top-ups
-  larkmoor: 4_700_000n, // 4,672,684
+  larkmoor: 4_900_000n, // 4,842,378 (incl. holder-name entry)
   tavren: 550_000n,     // 541,285
   tarrow: 1_000_000n,   // 976,073
-  halvern: 5_100_000n,  // 5,044,480
-  ostrell: 1_250_000n,  // 1,207,861
+  halvern: 5_300_000n,  // 5,214,198 (incl. holder-name entry)
+  ostrell: 1_400_000n,  // 1,377,663 (incl. holder-name entry)
   pellam: 210_000n,     // 203,193
   quenby: 210_000n,     // 203,193
   brennick: 1_300_000n, // 1,269,021

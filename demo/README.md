@@ -4,8 +4,8 @@ The two fictional farms of the asset passport demo, as **chronological action li
 
 | File | Contents |
 |---|---|
-| `wildrye.actions.json` | AP-0001 Wildrye Solar — 40 actions: one holder throughout, nothing pending |
-| `verrow.actions.json` | AP-0002 Verrow Solar — 59 actions: inverter 2, cable section C, a dispute, a late entry, a pending entry, a sale |
+| `wildrye.actions.json` | AP-0001 Wildrye Solar — 41 actions: one holder throughout, nothing pending |
+| `verrow.actions.json` | AP-0002 Verrow Solar — 61 actions: inverter 2, cable section C, a dispute, a late entry, a pending entry, a sale |
 | `illustrative.json` | Data-page details that are **not** on the network and not anchored (D40): COD, developer, grid connection, DC capacity and ratio, energization, typology, orientation; and the modules' performance warranty |
 | `evidence/` | Fictional documents for 10 key entries, each folder with a `manifest.json` |
 
@@ -24,6 +24,8 @@ Each action is one contract call:
 - `key` — a name for an entry or unit, so later actions can refer to it (`confirmEntry` → `entry`, `link`, `extendWarranty` → `unit`). The script maps keys to the numbers the contract assigns.
 
 For entries, `headline` is the text. The script sends the text for the holder's entries, and only its SHA-256 fingerprint for everyone else's; the confirmer then publishes the text (D79).
+
+**Holder names.** The contract stores a holder as a wallet address only. Each holder records its own name as an entry: category 10, headline starting `Holder name: ` (e.g. `Holder name: Larkmoor Capital`), written by the holder itself — at registration, and by a new holder after accepting a transfer. A rename is simply a new such entry; the history keeps every name. The viewer shows the current holder's latest one and keeps these entries out of the maintenance timeline.
 
 Categories and systems are numbers from the format document (spec §9, §13.4). Systems: 1 Inverters, 2 Modules, 3 Transformers, 4 Trackers, 5 Battery storage.
 

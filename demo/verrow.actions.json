@@ -15,7 +15,7 @@
         "battery": false,
         "state": "California",
         "county": "Fresno County",
-        "municipality": "[Municipality B]",
+        "municipality": "Kingsburg",
         "capacityKwAc": 10000,
         "epc": "Norvale Constructors",
         "spv": "Verrow Solar LLC",

@@ -15,7 +15,7 @@
         "battery": false,
         "state": "California",
         "county": "Fresno County",
-        "municipality": "[Municipality A]",
+        "municipality": "Kerman",
         "capacityKwAc": 10000,
         "epc": "Kestrand Builders",
         "spv": "Wildrye Solar LLC",

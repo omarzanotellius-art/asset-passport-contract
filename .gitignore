@@ -37,9 +37,8 @@
 deployments/localhost-demo.json
 deployments/localhost-overlay.json
 
-# Viewer data files are generated per network by scripts/viewer-data.ts.
-# Not committed until the live run produces the Amoy ones (Stage 2 part D).
-viewer/data/
+# Viewer data files (viewer/data/) are generated per network by scripts/viewer-data.ts and
+# viewer-snapshot.ts. The Amoy ones are committed: they are what the blog publishes.
 
 # Publication bundle: rebuilt from committed files by scripts/build-publish.mjs (P6).
 publish/

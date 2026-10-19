@@ -168,7 +168,33 @@ async function step(name: string, simulated: string | undefined, send: () => Pro
 const DEPLOY_GAS = 4_250_000n; // measured 4,209,764 for the deployment (part of the funder's figure)
 const TOPUP_GAS = 21_000n;
 async function maxFee() { return (await fees()).maxFeePerGas; }
-const withMargin = (gas: bigint, fee: bigint) => (gas * fee * 12n) / 10n; // +20%
+// S8'': gas on Amoy measured 12-32% above local (live run, instalment 1); scale by the worst case.
+const AMOY_FACTOR_PCT = 135n;
+const withMargin = (gas: bigint, fee: bigint) => (gas * AMOY_FACTOR_PCT * fee * 12n) / 1000n; // x1.35, then +20%
+
+// S12: just-in-time refill. Before each action on a live network, the sender must be able to pay for
+// THAT action: the network's own gas estimate x the fee x 1.3. If not, the funder first sends REFILL
+// (a resumable step), or the run pauses cleanly if the funder can't.
+const REFILL_GAS = 900_000n;
+const maxOf = (a: bigint, b: bigint) => (a > b ? a : b);
+async function refillIfLow(label: string, w: WalletName, estimate: () => Promise<bigint>): Promise<void> {
+  if (!PREFLIGHT || w === "funder") return;
+  const stepName = `refill ${w} before ${label}`;
+  if (state.done[label] || state.done[stepName] || state.pending?.step === label) return;
+  const fee = await maxFee();
+  const refill = maxOf(parseEther("0.03"), REFILL_GAS * fee);
+  if (state.pending?.step !== stepName) {
+    const needed = ((await estimate()) * fee * 13n) / 10n;
+    if ((await publicClient.getBalance({ address: address(w) })) >= needed) return;
+    const funderBal = await publicClient.getBalance({ address: address("funder") });
+    if (funderBal < refill + 21_000n * fee) {
+      console.log(`⏸  PAUSED before ${label} — ${w} needs a refill of ${formatEther(refill)} POL and the funder holds ${formatEther(funderBal)}.`);
+      console.log(`   Send POL to the funder (${address("funder")}) and re-run the same command to continue.`);
+      process.exit(0);
+    }
+  }
+  await step(stepName, undefined, async () => wallet.funder.sendTransaction({ to: address(w), value: refill, ...(await fees()) }));
+}
 
 /** POL a party still needs for its farm, given what it already holds. */
 async function shortfall(w: WalletName, fee: bigint) {
@@ -268,21 +294,21 @@ for (const farm of FARMS) {
     const asset = () => BigInt(state.ids[farm].asset!);
     const unitId = (key: string) => BigInt(state.ids[farm].units[key]);
     const entryId = (key: string) => BigInt(state.ids[farm].entries[key]);
-    const send = async (): Promise<`0x${string}`> => {
+    const call = (): [string, unknown[]] => {
       switch (a.do) {
-        case "registerAsset":   return c.write.registerAsset([a.identity], await as());
-        case "inviteRole":      return c.write.inviteRole([asset(), address(a.wallet), ROLE[a.role as keyof typeof ROLE], a.company], await as());
-        case "acceptRole":      return c.write.acceptRole([asset()], await as());
-        case "revokeRole":      return c.write.revokeRole([asset(), address(a.wallet)], await as());
-        case "addUnit":         return c.write.addUnit([asset(), unitInput(a.unit)], await as());
-        case "replaceUnit":     return c.write.replaceUnit([asset(), unitId(a.unit), unitInput(a.new), ts(a.replacedAt)], await as());
-        case "extendWarranty":  return c.write.extendWarranty([asset(), unitId(a.unit), ts(a.newEnd)], await as());
-        case "proposeTransfer": return c.write.proposeTransfer([asset(), address(a.to)], await as());
-        case "acceptTransfer":  return c.write.acceptTransfer([asset()], await as());
-        case "confirmEntry":    return c.write.confirmEntry([asset(), entryId(a.entry), headlineOf[a.entry]], await as());
+        case "registerAsset":   return ["registerAsset", [a.identity]];
+        case "inviteRole":      return ["inviteRole", [asset(), address(a.wallet), ROLE[a.role as keyof typeof ROLE], a.company]];
+        case "acceptRole":      return ["acceptRole", [asset()]];
+        case "revokeRole":      return ["revokeRole", [asset(), address(a.wallet)]];
+        case "addUnit":         return ["addUnit", [asset(), unitInput(a.unit)]];
+        case "replaceUnit":     return ["replaceUnit", [asset(), unitId(a.unit), unitInput(a.new), ts(a.replacedAt)]];
+        case "extendWarranty":  return ["extendWarranty", [asset(), unitId(a.unit), ts(a.newEnd)]];
+        case "proposeTransfer": return ["proposeTransfer", [asset(), address(a.to)]];
+        case "acceptTransfer":  return ["acceptTransfer", [asset()]];
+        case "confirmEntry":    return ["confirmEntry", [asset(), entryId(a.entry), headlineOf[a.entry]]];
         case "submitEntry": {
           const holderEntry = holderAt[farm][a.n] === a.by;
-          return c.write.submitEntry([asset(), {
+          return ["submitEntry", [asset(), {
             category: a.category,
             eventDate: ts(a.eventDate),
             headlineFingerprint: holderEntry ? ZERO32 : sha256hex(a.headline),
@@ -290,11 +316,14 @@ for (const farm of FARMS) {
             manifest: a.evidence ? manifestFingerprint(a.evidence) : ZERO32,
             equipmentRef: a.equipmentRef,
             link: a.link ? entryId(a.link) : 0n,
-          }], await as());
+          }]];
         }
       }
       throw new Error(`${name}: unknown action ${a.do}`);
     };
+    const send = async (): Promise<`0x${string}`> => { const [fn, args] = call(); return (c.write as any)[fn](args, await as()); };
+    const estimate = async (): Promise<bigint> => { const [fn, args] = call(); return (c.estimateGas as any)[fn](args, { account: wallet[a.by].account }); };
+    await refillIfLow(name, a.by, estimate);                         // S12
     await step(name, a.date, send, captureIds(farm, a));
   }
 }

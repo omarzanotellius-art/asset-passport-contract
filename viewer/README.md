@@ -50,6 +50,12 @@ The reviewed interactive demo's design, **unchanged in appearance** (D37), with 
 - Sections can be linked: `?asset=AP-0002#maintenance-2024`, `#wallets`, `#claims`, …
 - Start-up reads the chain **in parallel** with a **12-second limit**; on failure or time-out it uses `data/snapshot.json` (3D) and shows the archived-copy banner.
 
+### Design changes after the live run (2026-10-19, Omar's decisions)
+
+- **Section bar replaced by one compact menu**, "Go to section", under the page counter: the sections in order, with Maintenance listed by year. It shows the visitor's choice while that page is on screen (otherwise the first section visible).
+- **↗ marks every explorer link**: after the date on each entry row and stamp, after the current holder and the last transfer. The key explains it: "Items marked ↗ … open their record on the explorer."
+- Made in the page and in the reference demo alike. Tested: all 20 menu options open the right page and show the right item; marks visible; no sideways scrolling at 390 and 320 px; key page fits; dark mode readable; every spread identical to the reference (14 of 14 each).
+
 ### Data files (`data/`, generated, not committed until the live run)
 
 ```

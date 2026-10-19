@@ -67,6 +67,10 @@ h1{margin:0;font-family:var(--serif);font-weight:300;font-size:34px;line-height:
 .tabs{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:900px}
 .tab{min-height:44px;padding:0 14px;border-radius:999px;border:1px solid var(--chip-line);background:var(--chip);color:var(--text);font-family:var(--sans);font-size:13px;cursor:pointer}
 .tab[aria-current="page"]{background:var(--btn);border-color:var(--btn);color:var(--btn-text)}
+.jump{display:flex;align-items:center;justify-content:center;gap:10px;font-family:var(--sans);font-size:12px;color:var(--muted)}
+.jump select{min-height:44px;padding:0 12px;border-radius:999px;border:1px solid var(--chip-line);background:var(--chip);color:var(--text);font-family:var(--sans);font-size:13px;cursor:pointer;max-width:100%}
+.ext{display:inline-block;margin-left:4px;font-family:var(--sans);font-size:.95em;font-weight:500;color:var(--bronze);text-decoration:none}
+.stamp .ext{font-size:.8em;margin-left:3px}
 .years{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;align-items:center}
 .years .lbl{font-size:11px;letter-spacing:.08em;color:var(--muted);padding-right:4px}
 .year{min-height:44px;min-width:44px;padding:0 10px;border-radius:8px;border:1px solid var(--chip-line);background:var(--chip);color:var(--text);font-family:var(--mono);font-size:12px;cursor:pointer}
@@ -193,7 +197,7 @@ class Component extends DCLogic {
       { isBox: true, isNote: false, isLink: false, w: '30px', h: '30px', border: '5px double #0F1E38', radius: '50%', text: 'Double-ring seal: commissioning, original or after a major intervention' },
       { isBox: true, isNote: false, isLink: false, w: '26px', h: '26px', border: '2px solid #3B4A6B', radius: '50%', text: 'Round stamp: scheduled visit' },
       { isBox: false, isNote: true, isLink: false, text: 'Recorded date in bronze: recorded two or more months after the event' },
-      { isBox: false, isNote: false, isLink: true, text: 'Every stamp and entry links to its transaction on the explorer' },
+      { isBox: false, isNote: false, isLink: true, text: 'Items marked ↗ (every stamp and entry, the current holder and the last transfer) open their record on the explorer' },
       { isBox: false, isNote: false, isLink: false, text: 'Maintenance pages list entries by the year they were recorded; the event date is shown on each entry.' },
       { isBox: false, isNote: false, isLink: false, text: 'Recorded on the network: everything except a few details, which are illustrative in this demo: on the data page, COD, developer, grid connection, DC capacity and ratio, energization, typology and orientation; and the modules’ performance warranty.' },
       { isBox: false, isNote: false, isLink: false, text: 'Holder: the wallet that controls this record. It is not an ownership interest in the asset.' }
@@ -573,9 +577,9 @@ window.__startPassport = function () {
           field('TYPOLOGY', [p.mt1, p.mt2], 'span2') + field('ORIENTATION', [p.or1, p.or2]) +
         '</div>' +
         '<div class="hold">' +
-          '<div><div class="lab">CURRENT HOLDER</div><a class="w" href="' + esc(p.holderHref) + '" aria-label="Current holder: the wallet that controls this record, not an ownership interest in the asset. View it on the explorer.">' + esc(p.holder) + '</a></div>' +
+          '<div><div class="lab">CURRENT HOLDER</div><a class="w" href="' + esc(p.holderHref) + '" aria-label="Current holder: the wallet that controls this record, not an ownership interest in the asset. View it on the explorer.">' + esc(p.holder) + '<span class="ext" aria-hidden="true">↗</span></a></div>' +
           '<div><div class="lab">CONTROL LAST TRANSFERRED</div>' + (p.hasTransfer
-            ? '<a href="' + esc(p.transferHref) + '" style="font-size:13px" aria-label="Control last transferred ' + esc(p.lastTransfer) + '. View the transfer on the explorer.">' + esc(p.lastTransfer) + '</a>'
+            ? '<a href="' + esc(p.transferHref) + '" style="font-size:13px" aria-label="Control last transferred ' + esc(p.lastTransfer) + '. View the transfer on the explorer.">' + esc(p.lastTransfer) + '<span class="ext" aria-hidden="true">↗</span></a>'
             : '<div class="val" style="min-height:44px;display:flex;align-items:center;color:var(--ink-muted)">No transfer recorded</div>') + '</div>' +
         '</div>' +
         mrz(p));
@@ -585,7 +589,7 @@ window.__startPassport = function () {
         '<div style="display:flex;flex-direction:column;gap:14px">' + p.items.map(function (k) {
           var sw = k.isBox ? '<span style="display:block;width:' + k.w + ';height:' + k.h + ';border:' + k.border + ';border-radius:' + k.radius + '"></span>'
             : k.isNote ? '<span style="font-size:10px;line-height:1.2;color:var(--bronze);text-align:center">Nov<br>2024</span>'
-            : k.isLink ? '<span style="font-family:var(--mono);font-size:11px;color:var(--bronze);text-decoration:underline">0x…</span>' : '';
+            : k.isLink ? '<span style="font-family:var(--sans);font-size:16px;font-weight:500;color:var(--bronze)">↗</span>' : '';
           return '<div class="keyrow"><div class="sw" aria-hidden="true">' + sw + '</div><span class="kt">' + esc(k.text) + '</span></div>';
         }).join('') + '</div>' + mrz(p));
     } else {
@@ -599,12 +603,12 @@ window.__startPassport = function () {
       });
       if (p.hasStamps) inner += '<div class="stamps">' + p.stamps.map(function (s) {
         return '<div class="stampcell"><a class="stamp" href="' + esc(s.href) + '" aria-label="' + esc(s.aria) + '" style="width:' + s.w + ';border:' + s.border + ';color:' + s.ink + ';transform:rotate(' + s.rot + ')">' +
-          '<span class="l">' + esc(s.label) + '</span><span class="d">' + esc(s.date) + '</span><span class="x">' + esc(s.text) + '</span><span class="b">' + esc(s.by) + '</span></a>' +
+          '<span class="l">' + esc(s.label) + '</span><span class="d">' + esc(s.date) + '<span class="ext" aria-hidden="true">↗</span></span><span class="x">' + esc(s.text) + '</span><span class="b">' + esc(s.by) + '</span></a>' +
           s.notes.map(function (n) { return '<span class="note" style="max-width:200px;text-align:center">' + esc(n.text) + '</span>'; }).join('') + '</div>';
       }).join('') + '</div>';
       if (p.hasNotice) inner += '<div class="notice">' + esc(p.notice) + '</div>';
       if (p.hasLog) inner += '<div><div class="gt">' + esc(p.logTitle) + '</div>' + p.log.map(function (r) {
-        return '<a class="logrow" href="' + esc(r.href) + '" aria-label="' + esc(r.aria) + '"><div><div class="dt">' + esc(r.date) + '</div><div class="rc" style="color:' + r.recInk + '">' + esc(r.rec) + '</div></div>' +
+        return '<a class="logrow" href="' + esc(r.href) + '" aria-label="' + esc(r.aria) + '"><div><div class="dt">' + esc(r.date) + '<span class="ext" aria-hidden="true">↗</span></div><div class="rc" style="color:' + r.recInk + '">' + esc(r.rec) + '</div></div>' +
           '<div class="body"><span class="ty" style="color:' + r.ink + '">' + esc(r.type) + '</span>' +
           (r.hasText ? '<span class="tx">' + esc(r.text) + '</span>' : '') +
           (r.hasEquip ? '<span class="eq">' + esc(r.equip) + '</span>' : '') +
@@ -620,6 +624,21 @@ window.__startPassport = function () {
   }
 
   // ---------- whole page ----------
+  // "Go to section": the sections in order, with Maintenance listed by year.
+  var jumpItems = [], jumpChoice = null;   // the visitor's last choice, kept while it is on screen
+  function jumpMenu(tabs, years) {
+    jumpItems = [];
+    var on = function (t) { return t.current === 'page'; };   // entries mark the current page with the text 'page'
+    var inYears = years.some(on);
+    tabs.forEach(function (t) {
+      if (t.label === 'Maintenance' && years.length) years.forEach(function (y) { jumpItems.push({ label: 'Maintenance ' + y.label, go: y.go, current: on(y) }); });
+      else jumpItems.push({ label: t.label, go: t.go, current: on(t) });
+    });
+    var chosen = jumpItems.findIndex(function (it) { return it.current && it.label === jumpChoice; });
+    var sel = chosen >= 0 ? chosen : Math.max(0, jumpItems.findIndex(function (it) { return it.current; }));   // else the first current (a spread can show two)
+    var opts = jumpItems.map(function (it, i) { return '<option value="' + i + '"' + (i === sel ? ' selected' : '') + '>' + esc(it.label) + '</option>'; }).join('');
+    return '<div class="jump"><label for="jump">Go to section</label><select id="jump">' + opts + '</select></div>';
+  }
   function chips(list, cls) {
     return list.map(function (t, i) { return '<button type="button" class="' + cls + '" data-i="' + i + '" aria-current="' + t.current + '">' + esc(t.label) + '</button>'; }).join('');
   }
@@ -645,15 +664,13 @@ window.__startPassport = function () {
       html += '<div class="navrow"><button type="button" class="btn prev" data-nav="prev"' + (v.spreadPrevOff ? ' disabled' : '') + '>‹ Previous</button>' +
         '<span class="status" aria-live="polite">' + esc(v.spreadStatus) + '</span>' +
         '<button type="button" class="btn next" data-nav="next"' + (v.spreadNextOff ? ' disabled' : '') + '>' + esc(v.spreadNextLabel) + ' ›</button></div>';
-      html += '<nav class="tabs" aria-label="Passport sections">' + chips(v.spreadTabs, 'tab') + '</nav>';
-      if (v.spreadShowYears) html += '<nav class="years" aria-label="Maintenance years"><span class="lbl">MAINTENANCE</span>' + chips(v.spreadYears, 'year') + '</nav>';
+      html += jumpMenu(v.spreadTabs, v.spreadYears);
     } else {
       html += '<div class="single-wrap pagefade">' + renderPage(v.single) + '</div>';
       html += '<div class="navrow" style="max-width:440px;justify-content:space-between"><button type="button" class="btn prev" data-nav="prev" aria-label="Previous page"' + (v.singlePrevOff ? ' disabled' : '') + '>‹</button>' +
         '<span class="status" aria-live="polite">' + esc(v.singleStatus) + '</span>' +
         '<button type="button" class="btn next" data-nav="next"' + (v.singleNextOff ? ' disabled' : '') + '>' + esc(v.singleNextLabel) + ' ›</button></div>';
-      html += '<nav class="tabs" aria-label="Passport sections" style="max-width:440px">' + chips(v.singleTabs, 'tab') + '</nav>';
-      if (v.singleShowYears) html += '<nav class="years" aria-label="Maintenance years" style="max-width:440px">' + chips(v.singleYears, 'year') + '</nav>';
+      html += jumpMenu(v.singleTabs, v.singleYears);
     }
     html += '</section>';
 
@@ -670,7 +687,8 @@ window.__startPassport = function () {
 
     // wire controls
     var tabs = single ? v.singleTabs : v.spreadTabs, years = single ? v.singleYears : v.spreadYears;
-    app.querySelectorAll('.tab').forEach(function (b) { b.onclick = function () { tabs[+b.dataset.i].go(); }; });
+    var jump = app.querySelector('#jump');
+    if (jump) jump.onchange = function () { var it = jumpItems[+jump.value]; if (it) { jumpChoice = it.label; it.go(); } };
     app.querySelectorAll('.year').forEach(function (b) { b.onclick = function () { years[+b.dataset.i].go(); }; });
     app.querySelectorAll('[data-nav]').forEach(function (b) {
       b.onclick = function () { (b.dataset.nav === 'prev' ? (single ? v.singlePrev : v.spreadPrev) : (single ? v.singleNext : v.spreadNext))(); };

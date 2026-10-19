@@ -69,6 +69,8 @@ h1{margin:0;font-family:var(--serif);font-weight:300;font-size:34px;line-height:
 .tab[aria-current="page"]{background:var(--btn);border-color:var(--btn);color:var(--btn-text)}
 .jump{display:flex;align-items:center;justify-content:center;gap:10px;font-family:var(--sans);font-size:12px;color:var(--muted)}
 .jump select{min-height:44px;padding:0 12px;border-radius:999px;border:1px solid var(--chip-line);background:var(--chip);color:var(--text);font-family:var(--sans);font-size:13px;cursor:pointer;max-width:100%}
+.row a.wl{color:inherit;text-decoration:none}
+.row a.wl:hover{text-decoration:underline;text-underline-offset:3px}
 .ext{display:inline-block;margin-left:4px;font-family:var(--sans);font-size:.95em;font-weight:500;color:var(--bronze);text-decoration:none}
 .stamp .ext{font-size:.8em;margin-left:3px}
 .years{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;align-items:center}
@@ -172,6 +174,7 @@ class Component extends DCLogic {
   assets() { return window.__PASSPORT_DATA; }
   txHref(tx) { return tx ? window.__PASSPORT_EXPLORER + '/tx/' + tx : '#'; }
   addrHref(addr) { return addr ? window.__PASSPORT_EXPLORER + '/address/' + addr : '#'; }
+  walletHref(w) { return this.addrHref(w.address); }
 
   // ---- Entry kinds. Only scheduled visits and commissioning are stamps; everything else is a log row. ----
   kinds() {
@@ -197,7 +200,7 @@ class Component extends DCLogic {
       { isBox: true, isNote: false, isLink: false, w: '30px', h: '30px', border: '5px double #0F1E38', radius: '50%', text: 'Double-ring seal: commissioning, original or after a major intervention' },
       { isBox: true, isNote: false, isLink: false, w: '26px', h: '26px', border: '2px solid #3B4A6B', radius: '50%', text: 'Round stamp: scheduled visit' },
       { isBox: false, isNote: true, isLink: false, text: 'Recorded date in bronze: recorded two or more months after the event' },
-      { isBox: false, isNote: false, isLink: true, text: 'Items marked ↗ (every stamp and entry, the current holder and the last transfer) open their record on the explorer' },
+      { isBox: false, isNote: false, isLink: true, text: 'Items marked ↗ (every stamp, entry and wallet) open their record on the explorer' },
       { isBox: false, isNote: false, isLink: false, text: 'Maintenance pages list entries by the year they were recorded; the event date is shown on each entry.' },
       { isBox: false, isNote: false, isLink: false, text: 'Recorded on the network: everything except a few details, which are illustrative in this demo: on the data page, COD, developer, grid connection, DC capacity and ratio, energization, typology and orientation; and the modules’ performance warranty.' },
       { isBox: false, isNote: false, isLink: false, text: 'Holder: the wallet that controls this record. It is not an ownership interest in the asset.' }
@@ -311,8 +314,8 @@ class Component extends DCLogic {
     var trs = of(['transfer']);
     sheet('wallets', 'Wallets', { title: 'WALLETS',
       groups: [
-        { title: 'WALLETS THAT HAVE CONTROLLED THIS RECORD', rows: a.wallets.holders.map(function (h) { return { name: h.w, value: h.period }; }) },
-        { title: 'WALLETS THAT CAN ADD ENTRIES', rows: a.wallets.writers.map(function (w) { return { name: w.w, value: w.period, sub: w.role, hasSub: true }; }) }
+        { title: 'WALLETS THAT HAVE CONTROLLED THIS RECORD', rows: a.wallets.holders.map(function (h) { return { name: h.w, value: h.period, href: self.walletHref(h) }; }) },
+        { title: 'WALLETS THAT CAN ADD ENTRIES', rows: a.wallets.writers.map(function (w) { return { name: w.w, value: w.period, sub: w.role, hasSub: true, href: self.walletHref(w) }; }) }
       ],
       logTitle: 'TRANSFERS OF CONTROL', log: trs.map(function (en) { return self.rowView(en); }),
       notice: trs.length ? '' : 'No transfer recorded' });
@@ -597,7 +600,7 @@ window.__startPassport = function () {
       if (p.hasSummary) inner += '<div class="summary">' + p.summary.map(function (s) { return '<div><span class="lab">' + esc(s.label) + '</span><b>' + esc(s.value) + '</b></div>'; }).join('') + '</div>';
       (p.groups || []).forEach(function (g) {
         inner += '<div><div class="gt">' + esc(g.title) + '</div>' + g.rows.map(function (r) {
-          return '<div class="row"><div class="top"><span>' + esc(r.name) + '</span><span class="v">' + esc(r.value || '') + '</span></div>' +
+          return '<div class="row"><div class="top">' + (r.href ? '<a class="wl" href="' + esc(r.href) + '" aria-label="Wallet ' + esc(r.name) + ': view its transactions on the explorer">' + esc(r.name) + '<span class="ext" aria-hidden="true">↗</span></a>' : '<span>' + esc(r.name) + '</span>') + '<span class="v">' + esc(r.value || '') + '</span></div>' +
             (r.hasSub ? '<span class="s">' + esc(r.sub) + '</span>' : '') + (r.hasSub2 ? '<span class="s">' + esc(r.sub2) + '</span>' : '') + '</div>';
         }).join('') + '</div>';
       });

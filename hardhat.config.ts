@@ -31,4 +31,9 @@ export default defineConfig({
       accounts: { mnemonic: configVariable("AMOY_MNEMONIC"), count: 10 },
     },
   },
+  // Source verification on the explorer (amoy.polygonscan.com), via Etherscan's multichain API.
+  // The key is referred to by NAME only; its value lives in Hardhat's keystore.
+  verify: {
+    etherscan: { apiKey: configVariable("ETHERSCAN_API_KEY") },
+  },
 });

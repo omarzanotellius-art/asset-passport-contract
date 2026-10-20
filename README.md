@@ -19,7 +19,6 @@
 
 Neither passport says which farm is better. A reader comparing them can see where the work kept returning, which claim has no resolution recorded, which year has no visit, which entry was recorded late, and which was never confirmed. Each of these can be checked on the public network, except the recorded dates, which are simulated in this demo (see [Live demo](#live-demo-polygon-amoy-test-network)).
 
-<!-- PENDING: the two passport links below go live when the bundle is published on the blog. -->
 - [Wildrye Solar passport (AP-0001)](https://theunlistedbrief.com/passport/?asset=AP-0001)
 - [Verrow Solar passport (AP-0002)](https://theunlistedbrief.com/passport/?asset=AP-0002)
 

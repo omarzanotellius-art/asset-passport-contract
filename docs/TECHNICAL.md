@@ -343,7 +343,7 @@ builds `publish/passport/` (exactly eight files) and `publish/passport.zip`, plu
 | A document | Fingerprint it, compare with `manifest.json`, fingerprint the manifest, find that value in the entry's transaction input — see the README's *Verify a record yourself* |
 | The published pages | In the top folder, with the files' subfolders (`lib/`, `data/`) kept: `sha256sum -c SHA256SUMS` (Linux, or Git Bash on Windows) or `shasum -a 256 -c SHA256SUMS` (macOS). PowerShell has no equivalent; compare each file with `Get-FileHash` |
 | The pages match the reviewed design | `node viewer/test/compare-snapshot.mjs` |
-| The contract's source code | **Pending:** verification on amoy.polygonscan.com. Until then the explorer shows bytecode only, and transaction inputs appear undecoded |
+| The contract's source code | **Verified** on [PolygonScan](https://amoy.polygonscan.com/address/0x024f7b7064ff3f824105563c443fb6db5365bdf2#code) and [Sourcify](https://sourcify.dev/server/repo-ui/80002/0x024f7b7064ff3f824105563c443fb6db5365bdf2): the explorer shows the code and decodes every transaction's input. Reproduce with `npx hardhat verify --network amoy 0x024f7b7064ff3f824105563c443fb6db5365bdf2`, with an Etherscan API key stored as `ETHERSCAN_API_KEY` in the keystore |
 
 ---
 

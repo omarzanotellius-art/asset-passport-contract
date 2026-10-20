@@ -105,7 +105,6 @@ Both passports were recorded on 19 October 2026 on Polygon Amoy, a public test n
 
 You don't need to trust anyone to check that a document matches the record. It takes about five minutes and a command line; the tools are already on your computer, so there's nothing to install. If you'd rather not, skip this section: nothing else in this README depends on it.
 
-<!-- PENDING: confirm step 5 on the live transaction (0x03343efd…cfa147: From = Brennick 0x8c3C…8CE4; Decode Input Data shows 0x775d4f67…daae133 among the entry's values; also check the Original-view search), then test all steps from a fresh clone. -->
 1. **Pick a sample file**, for example `demo/evidence/verrow/cableTemp/inspection-report.txt`, from this repository. Download the file (or clone the repository) rather than copying and pasting its text: copying can change invisible characters, such as line endings, and the fingerprint would no longer match.
 2. **Fingerprint it** with the tool already on your computer, running the command in the folder that contains the file:
    - Windows (PowerShell): `Get-FileHash -Algorithm SHA256 inspection-report.txt`
@@ -113,7 +112,7 @@ You don't need to trust anyone to check that a document matches the record. It t
    - Linux: `sha256sum inspection-report.txt`
 3. **Compare** the result with the fingerprint listed next to the file in the same folder's `manifest.json`. They should match exactly (upper or lower case doesn't matter).
 4. **Fingerprint the manifest** the same way. This single value is what was recorded on the network with the entry.
-5. **Look it up** on the block explorer. Find the matching step in `deployments/amoy-demo.json` (the step named `verrow #26`: Brennick O&M's October 2022 temporary repair on cable section C) and open its transaction on the Amoy explorer. Under Input Data, click **Decode Input Data**: the fingerprint from step 4 appears among the entry's values, with a leading `0x`. (Or choose **View Input As → Original** and search (Ctrl+F) for the fingerprint without the `0x`.) If it matches, that exact document was recorded at that time, by the address shown as "From."
+5. **Look it up** on the block explorer. Find the matching step in `deployments/amoy-demo.json` (the step named `verrow #26`: Brennick O&M's October 2022 temporary repair on cable section C) and open its transaction on the Amoy explorer. Scroll down to **More Details** and click **+ Click to show more**. **Input Data** lists the entry's values on numbered lines, `[0]`, `[1]`, `[2]`…; the fingerprint from step 4 is one of them, without the leading `0x` (line `[6]` for this entry: scroll inside the box, or search with Ctrl+F). If it's there, that exact document was recorded at that time, by the address shown as "From."
 
 Change one character in the file and repeat step 2: the fingerprint changes completely, and the match fails.
 
